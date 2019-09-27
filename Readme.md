@@ -16,6 +16,7 @@ cmake with option `cmake -DBUILD_SHARED_LIBS=ON  ..`
 
 modify the test bench file in folder `test_bench` and run.
 
-
+# More
+WipDB's implementation is in folder `kv`.
 
 

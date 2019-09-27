@@ -1,0 +1,28 @@
+.//util/threadpool_imp.cc:279:  size_t thread_id = meta->thread_id_;
+.//util/threadpool_imp.cc:280:  ThreadPoolImpl::Impl* tp = meta->thread_pool_;
+.//db/builder.cc:89:  meta->fd.file_size = 0;
+.//db/builder.cc:97:  std::string fname = TableFileName(ioptions.cf_paths, meta->fd.GetNumber(),
+.//db/builder.cc:98:                                    meta->fd.GetPathId());
+.//db/builder.cc:118:            job_id, meta->fd, tp, reason, s);
+.//db/builder.cc:151:      meta->UpdateBoundaries(key, c_iter.ikey().sequence);
+.//db/builder.cc:167:      meta->UpdateBoundariesForRange(kv.first, tombstone.SerializeEndKey(),
+.//db/builder.cc:183:      meta->fd.file_size = file_size;
+.//db/builder.cc:184:      meta->marked_for_compaction = builder->NeedCompact();
+.//db/builder.cc:185:      assert(meta->fd.GetFileSize() > 0);
+.//db/builder.cc:231:  if (!s.ok() || meta->fd.GetFileSize() == 0) {
+.//db/builder.cc:238:      job_id, meta->fd, tp, reason, s);
+.//db/builder.h:60:// If no data is present in *iter, meta->file_size will be set to
+.//db/compaction_job.cc:1196:    } else if (meta->smallest.size() > 0) {
+.//db/compaction_job.cc:1200:      smallest_user_key = meta->smallest.user_key().ToString(false /*hex*/);
+.//db/compaction_job.cc:1230:    if (upper_bound != nullptr && meta->largest.size() > 0) {
+.//db/compaction_job.cc:1232:          ucmp->Compare(meta->largest.user_key(), *upper_bound) == 0;
+.//db/compaction_job.cc:1315:      meta->UpdateBoundariesForRange(smallest_candidate, largest_candidate,
+.//db/compaction_job.cc:1319:    meta->marked_for_compaction = sub_compact->builder->NeedCompact();
+.//db/compaction_job.cc:1329:    meta->fd.file_size = current_bytes;
+.//db/compaction_job.cc:1355:                      meta->fd.GetNumber(), meta->fd.GetPathId());
+.//db/compaction_job.cc:1374:                   meta->marked_for_compaction ? " (need compaction)" : "");
+.//db/compaction_job.cc:1381:                      meta->fd.GetNumber(), meta->fd.GetPathId());
+.//db/compaction_job.cc:1382:    output_fd = meta->fd;
+.//db/compaction_job.cc:1394:  if (sfm && meta != nullptr && meta->fd.GetPathId() == 0) {
+.//db/compaction_job.cc:1397:                      meta->fd.GetNumber(), meta->fd.GetPathId());
+.//monitoring/file_read_sample.h:20:  meta->stats.num_reads_sampled.fetch_add(kFileReadSampleRate,

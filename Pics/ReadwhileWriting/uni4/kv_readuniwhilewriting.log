@@ -1,0 +1,2417 @@
+./kv/release/tests/db/kv_bench --writes=200000000 --rwdelay=5 --db=/mnt/nvm/kv1B --logpath=/mnt/ssd --threads=3 --open_files=20000 --range=1000000000 --num=1000000000 --reads=1000000 --bloom_bits=10 --low_pool=2 --high_pool=2 --stats_interval=1000000 --value_size=100 --benchmarks=readuniwhilewriting,stats --ycsb_ops_num=50000000 --use_existing_db=true --histogram=true --log=false --write_buffer_size=2097152 --skiplistrep=false --sleep=900 --print_wa=true --log_dio=true --hugepage=true 
+Bench num: 1000000000, range: 1000000000
+Keys:       16 bytes each
+Values:     100 bytes each (50 bytes after compression)
+Entries:    1000000000
+RawSize:    110626.2 MB (estimated)
+FileSize:   62942.5 MB (estimated)
+WARNING: Snappy compression is not enabled
+------------------------------------------------
+Write buffer: 2048.00 KB. Compression: 0. 
+Restore 121 pivots
+Recover seq# 1010000000, log# 2, min log#0, file# 76401
+using restored pivots
+Log_Recover_Time, 0.0000, BucketCount, 121 , Log_size, 0.0 ,MB
+2019/09/20-16:26:42  ... thread 1: (1000000,1000000) ops and (6549.7,6549.7) ops/second in (152.678149,152.678149) seconds
+2019/09/20-16:26:43  ... thread 2: (1000000,1000000) ops and (6517.5,6517.5) ops/second in (153.433886,153.433886) seconds
+2019/09/20-16:26:45  ... thread 3: (1000000,1000000) ops and (6443.6,6443.6) ops/second in (155.192914,155.192914) seconds
+2019/09/20-16:28:15  ... thread 1: (1000000,2000000) ops and (10768.6,8145.3) ops/second in (92.862308,245.540457) seconds
+2019/09/20-16:28:16  ... thread 2: (1000000,2000000) ops and (10759.8,8117.8) ops/second in (92.938197,246.372083) seconds
+2019/09/20-16:28:23  ... thread 3: (1000000,2000000) ops and (10146.3,7881.7) ops/second in (98.558172,253.751086) seconds
+2019/09/20-16:29:55  ... thread 2: (1000000,3000000) ops and (10034.7,8669.9) ops/second in (99.653883,346.025966) seconds
+2019/09/20-16:29:58  ... thread 1: (1000000,3000000) ops and (9707.9,8607.1) ops/second in (103.009298,348.549755) seconds
+2019/09/20-16:30:03  ... thread 3: (1000000,3000000) ops and (10028.7,8487.4) ops/second in (99.714132,353.465218) seconds
+2019/09/20-16:31:33  ... thread 2: (1000000,4000000) ops and (10202.8,9008.2) ops/second in (98.012236,444.038202) seconds
+2019/09/20-16:31:35  ... thread 1: (1000000,4000000) ops and (10268.6,8969.9) ops/second in (97.384670,445.934425) seconds
+2019/09/20-16:31:38  ... thread 3: (1000000,4000000) ops and (10543.7,8922.4) ops/second in (94.843360,448.308578) seconds
+2019/09/20-16:33:05  ... thread 2: (1000000,5000000) ops and (10945.9,9338.9) ops/second in (91.358821,535.397023) seconds
+2019/09/20-16:33:08  ... thread 1: (1000000,5000000) ops and (10741.1,9275.8) ops/second in (93.100694,539.035119) seconds
+2019/09/20-16:33:11  ... thread 3: (1000000,5000000) ops and (10762.9,9238.4) ops/second in (92.911798,541.220376) seconds
+2019/09/20-16:34:44  ... thread 2: (1000000,6000000) ops and (10106.2,9458.6) ops/second in (98.949124,634.346147) seconds
+2019/09/20-16:34:45  ... thread 3: (1000000,6000000) ops and (10568.2,9436.3) ops/second in (94.623234,635.843610) seconds
+2019/09/20-16:34:45  ... thread 1: (1000000,6000000) ops and (10322.2,9435.2) ops/second in (96.878233,635.913352) seconds
+2019/09/20-16:36:19  ... thread 3: (1000000,7000000) ops and (10685.9,9596.6) ops/second in (93.581158,729.424768) seconds
+2019/09/20-16:36:19  ... thread 1: (1000000,7000000) ops and (10691.0,9596.3) ops/second in (93.536376,729.449728) seconds
+2019/09/20-16:36:20  ... thread 2: (1000000,7000000) ops and (10351.8,9576.6) ops/second in (96.601611,730.947758) seconds
+2019/09/20-16:37:51  ... thread 1: (1000000,8000000) ops and (10825.7,9734.5) ops/second in (92.373088,821.822816) seconds
+2019/09/20-16:37:53  ... thread 3: (1000000,8000000) ops and (10655.3,9717.3) ops/second in (93.849844,823.274612) seconds
+2019/09/20-16:37:57  ... thread 2: (1000000,8000000) ops and (10313.6,9662.9) ops/second in (96.959604,827.907362) seconds
+2019/09/20-16:39:15  ... thread 0: (1000000,1000000) ops and (1103.8,1103.8) ops/second in (905.955265,905.955265) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0      0.00     0.00      0.00
+  1      4.94   709.25    701.94
+  2    105.61 16931.74  16710.41
+BucketCount: 191
+WriteAmplification: inf
+
+2019/09/20-16:39:22  ... thread 0: (1000000,2000000) ops and (157724.7,2192.3) ops/second in (6.340161,912.295426) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0      1.06     0.00    145.55
+  1      5.40   783.64    775.88
+  2    109.69 17588.17  17349.03
+BucketCount: 205
+WriteAmplification: 125.5247
+
+2019/09/20-16:39:26  ... thread 1: (1000000,9000000) ops and (10558.8,9819.6) ops/second in (94.707700,916.530516) seconds
+2019/09/20-16:39:28  ... thread 0: (1000000,3000000) ops and (164852.8,3266.7) ops/second in (6.066019,918.361445) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0      1.81     0.00    215.72
+  1      5.58   815.06    807.11
+  2    112.87 18049.87  17796.28
+BucketCount: 212
+WriteAmplification: 87.2371
+
+2019/09/20-16:39:30  ... thread 3: (1000000,9000000) ops and (10293.4,9778.1) ops/second in (97.149599,920.424211) seconds
+2019/09/20-16:39:34  ... thread 0: (1000000,4000000) ops and (163801.4,4326.8) ops/second in (6.104953,924.466398) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0      2.89     0.00    314.30
+  1      5.82   852.82    844.65
+  2    123.34 19546.29  19260.52
+BucketCount: 219
+WriteAmplification: 64.9675
+
+2019/09/20-16:39:39  ... thread 2: (1000000,9000000) ops and (9849.8,9683.3) ops/second in (101.524506,929.431868) seconds
+2019/09/20-16:39:40  ... thread 0: (1000000,5000000) ops and (165452.7,5373.4) ops/second in (6.044024,930.510422) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0      3.75     0.00    415.90
+  1      5.96   878.11    869.79
+  2    131.92 20786.17  20480.02
+BucketCount: 219
+WriteAmplification: 52.3345
+
+2019/09/20-16:39:46  ... thread 0: (1000000,6000000) ops and (163230.2,6405.9) ops/second in (6.126318,936.636740) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0      4.72     0.00    493.98
+  1      6.99  1078.81   1069.29
+  2    145.97 22750.14  22375.57
+BucketCount: 226
+WriteAmplification: 48.4610
+
+2019/09/20-16:39:52  ... thread 0: (1000000,7000000) ops and (164249.4,7425.3) ops/second in (6.088304,942.725044) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0      5.93     0.00    606.02
+  1      8.12  1290.12   1279.30
+  2    147.09 22973.20  22570.13
+BucketCount: 233
+WriteAmplification: 40.3541
+
+2019/09/20-16:39:58  ... thread 0: (1000000,8000000) ops and (165640.1,8432.0) ops/second in (6.037187,948.762231) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0      6.59     0.00    684.64
+  1      8.38  1338.91   1327.79
+  2    155.26 24154.22  23728.80
+BucketCount: 240
+WriteAmplification: 37.5980
+
+2019/09/20-16:40:04  ... thread 0: (1000000,9000000) ops and (167306.8,9426.7) ops/second in (5.977044,954.739275) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0      7.55     0.00    784.18
+  1      8.70  1377.79   1366.44
+  2    163.29 25367.25  24907.84
+BucketCount: 254
+WriteAmplification: 34.5052
+
+2019/09/20-16:40:10  ... thread 0: (1000000,10000000) ops and (169984.7,10409.9) ops/second in (5.882882,960.622157) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0      8.53     0.00    884.07
+  1      8.86  1409.76   1398.22
+  2    170.96 26527.93  26043.33
+BucketCount: 261
+WriteAmplification: 32.0401
+
+2019/09/20-16:40:16  ... thread 0: (1000000,11000000) ops and (166836.9,11379.9) ops/second in (5.993879,966.616036) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0      9.69     0.00   1009.56
+  1      9.47  1519.66   1507.46
+  2    179.13 27773.55  27242.59
+BucketCount: 275
+WriteAmplification: 29.4778
+
+2019/09/20-16:40:22  ... thread 0: (1000000,12000000) ops and (166062.0,12337.6) ops/second in (6.021847,972.637883) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     10.60     0.00   1135.30
+  1     10.27  1650.82   1637.84
+  2    180.13 27961.05  27386.42
+BucketCount: 282
+WriteAmplification: 26.5653
+
+2019/09/20-16:40:28  ... thread 0: (1000000,13000000) ops and (167950.7,13284.4) ops/second in (5.954128,978.592011) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     11.56     0.00   1247.77
+  1     10.86  1758.48   1744.85
+  2    188.17 29138.49  28538.31
+BucketCount: 282
+WriteAmplification: 25.2698
+
+2019/09/20-16:40:34  ... thread 0: (1000000,14000000) ops and (167067.8,14219.3) ops/second in (5.985593,984.577604) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     12.83     0.00   1401.82
+  1     11.47  1853.51   1839.30
+  2    196.12 30334.07  29697.80
+BucketCount: 289
+WriteAmplification: 23.4972
+
+2019/09/20-16:40:40  ... thread 0: (1000000,15000000) ops and (169035.9,15144.0) ops/second in (5.915903,990.493507) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     13.57     0.00   1499.25
+  1     11.85  1906.22   1891.68
+  2    203.76 31495.67  30832.55
+BucketCount: 289
+WriteAmplification: 22.8271
+
+2019/09/20-16:40:46  ... thread 0: (1000000,16000000) ops and (168462.2,16057.3) ops/second in (5.936050,996.429557) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     14.50     0.00   1598.12
+  1     12.16  1961.70   1946.84
+  2    203.76 31495.67  30832.55
+BucketCount: 289
+WriteAmplification: 21.5112
+
+2019/09/20-16:40:52  ... thread 0: (1000000,17000000) ops and (170143.9,16960.9) ops/second in (5.877379,1002.306936) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     15.26     0.00   1686.94
+  1     12.65  2055.53   2040.11
+  2    211.77 32704.40  32000.79
+BucketCount: 289
+WriteAmplification: 21.1791
+
+2019/09/20-16:40:58  ... thread 0: (1000000,18000000) ops and (168393.7,17852.8) ops/second in (5.938466,1008.245402) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     16.09     0.00   1787.61
+  1     13.10  2137.73   2121.82
+  2    219.73 33886.26  33152.89
+BucketCount: 289
+WriteAmplification: 20.7329
+
+2019/09/20-16:41:04  ... thread 0: (1000000,19000000) ops and (168488.7,18734.3) ops/second in (5.935115,1014.180517) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     16.77     0.00   1883.47
+  1     13.59  2228.75   2212.29
+  2    227.77 35089.00  34315.38
+BucketCount: 296
+WriteAmplification: 20.3938
+
+2019/09/20-16:41:10  ... thread 0: (1000000,20000000) ops and (168406.4,19605.6) ops/second in (5.938017,1020.118534) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     17.67     0.00   1986.92
+  1     14.07  2315.30   2298.32
+  2    228.32 35197.73  34404.84
+BucketCount: 296
+WriteAmplification: 19.4724
+
+2019/09/20-16:41:15  ... thread 0: (1000000,21000000) ops and (167694.2,20466.2) ops/second in (5.963237,1026.081771) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     18.81     0.00   2103.29
+  1     14.59  2412.33   2393.73
+  2    236.39 36392.79  35582.45
+BucketCount: 310
+WriteAmplification: 19.0556
+
+2019/09/20-16:41:21  ... thread 0: (1000000,22000000) ops and (167232.7,21316.6) ops/second in (5.979692,1032.061463) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     19.80     0.00   2219.71
+  1     15.11  2505.11   2485.39
+  2    244.51 37622.93  36787.04
+BucketCount: 317
+WriteAmplification: 18.6926
+
+2019/09/20-16:41:28  ... thread 0: (1000000,23000000) ops and (164739.2,22155.2) ops/second in (6.070200,1038.131663) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     21.07     0.00   2341.93
+  1     15.54  2586.93   2566.40
+  2    253.31 38889.25  38016.50
+BucketCount: 331
+WriteAmplification: 18.3288
+
+2019/09/20-16:41:34  ... thread 0: (1000000,24000000) ops and (163807.0,22983.3) ops/second in (6.104744,1044.236407) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     22.14     0.00   2454.97
+  1     16.06  2672.42   2647.44
+  2    262.29 40240.88  39328.10
+BucketCount: 352
+WriteAmplification: 18.0982
+
+2019/09/20-16:41:40  ... thread 0: (1000000,25000000) ops and (164469.0,23802.3) ops/second in (6.080173,1050.316580) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     23.18     0.00   2572.75
+  1     16.59  2747.06   2721.62
+  2    262.89 40317.19  39403.72
+BucketCount: 359
+WriteAmplification: 17.3737
+
+2019/09/20-16:41:46  ... thread 0: (1000000,26000000) ops and (164877.3,24612.3) ops/second in (6.065118,1056.381698) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     23.93     0.00   2666.16
+  1     16.95  2815.57   2788.37
+  2    271.93 41628.97  40678.60
+BucketCount: 380
+WriteAmplification: 17.3032
+
+2019/09/20-16:41:52  ... thread 0: (1000000,27000000) ops and (162103.8,25410.6) ops/second in (6.168888,1062.550586) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     24.71     0.00   2765.05
+  1     17.59  2935.11   2905.83
+  2    280.79 42966.15  41975.64
+BucketCount: 422
+WriteAmplification: 17.2317
+
+2019/09/20-16:41:54  ... thread 1: (1000000,10000000) ops and (6767.8,9395.9) ops/second in (147.758169,1064.288685) seconds
+2019/09/20-16:41:58  ... thread 3: (1000000,10000000) ops and (6755.4,9359.3) ops/second in (148.030228,1068.454439) seconds
+2019/09/20-16:41:58  ... thread 0: (1000000,28000000) ops and (162445.8,26199.9) ops/second in (6.155899,1068.706485) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     25.78     0.00   2860.51
+  1     18.34  3057.58   3023.76
+  2    289.80 44317.59  43285.82
+BucketCount: 450
+WriteAmplification: 17.1893
+
+2019/09/20-16:42:04  ... thread 0: (1000000,29000000) ops and (164325.2,26982.0) ops/second in (6.085493,1074.791978) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     26.50     0.00   2940.51
+  1     18.79  3135.14   3099.46
+  2    290.61 44469.19  43435.89
+BucketCount: 464
+WriteAmplification: 16.8256
+
+2019/09/20-16:42:09  ... thread 2: (1000000,10000000) ops and (6673.2,9265.4) ops/second in (149.853352,1079.285220) seconds
+2019/09/20-16:42:10  ... thread 0: (1000000,30000000) ops and (165723.5,27756.5) ops/second in (6.034148,1080.826126) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     27.46     0.00   3028.94
+  1     19.18  3188.18   3151.16
+  2    298.72 45676.48  44603.38
+BucketCount: 464
+WriteAmplification: 16.7661
+
+2019/09/20-16:42:16  ... thread 0: (1000000,31000000) ops and (167545.1,28524.2) ops/second in (5.968541,1086.794667) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     28.55     0.00   3119.80
+  1     19.32  3213.93   3176.69
+  2    306.37 46824.57  45714.15
+BucketCount: 464
+WriteAmplification: 16.6711
+
+2019/09/20-16:42:22  ... thread 0: (1000000,32000000) ops and (164890.3,29281.0) ops/second in (6.064637,1092.859304) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     29.34     0.00   3216.48
+  1     19.91  3308.06   3270.23
+  2    314.71 48090.54  46941.60
+BucketCount: 464
+WriteAmplification: 16.6108
+
+2019/09/20-16:42:28  ... thread 0: (1000000,33000000) ops and (164705.6,30029.2) ops/second in (6.071440,1098.930744) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     30.09     0.00   3303.32
+  1     20.24  3366.12   3327.94
+  2    315.22 48167.16  47017.53
+BucketCount: 471
+WriteAmplification: 16.2409
+
+2019/09/20-16:42:34  ... thread 0: (1000000,34000000) ops and (166271.7,30770.8) ops/second in (6.014251,1104.944995) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     30.92     0.00   3402.37
+  1     20.57  3424.64   3386.02
+  2    322.98 49338.71  48152.75
+BucketCount: 471
+WriteAmplification: 16.1479
+
+2019/09/20-16:42:40  ... thread 0: (1000000,35000000) ops and (164225.2,31502.2) ops/second in (6.089201,1111.034196) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     31.85     0.00   3528.79
+  1     20.91  3485.16   3446.17
+  2    330.80 50517.47  49290.06
+BucketCount: 471
+WriteAmplification: 15.9446
+
+2019/09/20-16:42:46  ... thread 0: (1000000,36000000) ops and (165960.7,32227.5) ops/second in (6.025523,1117.059719) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     32.92     0.00   3647.73
+  1     21.12  3519.36   3480.16
+  2    338.44 51671.04  50400.83
+BucketCount: 471
+WriteAmplification: 15.7711
+
+2019/09/20-16:42:52  ... thread 0: (1000000,37000000) ops and (165287.0,32944.2) ops/second in (6.050083,1123.109802) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     33.91     0.00   3764.43
+  1     21.51  3570.92   3531.10
+  2    346.18 52851.09  51538.20
+BucketCount: 471
+WriteAmplification: 15.6289
+
+2019/09/20-16:42:59  ... thread 0: (1000000,38000000) ops and (163799.9,33651.7) ops/second in (6.105010,1129.214812) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     35.03     0.00   3892.75
+  1     22.16  3664.93   3624.42
+  2    346.53 52920.50  51607.01
+BucketCount: 485
+WriteAmplification: 15.1883
+
+2019/09/20-16:43:05  ... thread 0: (1000000,39000000) ops and (162592.2,34350.2) ops/second in (6.150356,1135.365168) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     36.08     0.00   4009.61
+  1     22.50  3723.88   3682.89
+  2    354.92 54166.27  52812.97
+BucketCount: 506
+WriteAmplification: 15.0901
+
+2019/09/20-16:43:11  ... thread 0: (1000000,40000000) ops and (162984.2,35041.6) ops/second in (6.135564,1141.500732) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     37.20     0.00   4136.72
+  1     22.97  3807.95   3766.06
+  2    362.80 55341.89  53951.36
+BucketCount: 513
+WriteAmplification: 14.9525
+
+2019/09/20-16:43:17  ... thread 0: (1000000,41000000) ops and (163532.1,35726.2) ops/second in (6.115006,1147.615738) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     38.31     0.00   4268.33
+  1     23.40  3882.95   3840.33
+  2    370.69 56539.26  55109.96
+BucketCount: 527
+WriteAmplification: 14.8111
+
+2019/09/20-16:43:23  ... thread 0: (1000000,42000000) ops and (165409.4,36405.8) ops/second in (6.045607,1153.661345) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     39.14     0.00   4358.49
+  1     23.96  3959.54   3915.87
+  2    378.40 57715.27  56243.08
+BucketCount: 534
+WriteAmplification: 14.8027
+
+2019/09/20-16:43:29  ... thread 0: (1000000,43000000) ops and (165016.6,37077.9) ops/second in (6.059998,1159.721343) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     39.91     0.00   4434.79
+  1     24.44  4039.64   3995.14
+  2    378.78 57762.07  56289.48
+BucketCount: 548
+WriteAmplification: 14.5936
+
+2019/09/20-16:43:35  ... thread 0: (1000000,44000000) ops and (165626.3,37743.6) ops/second in (6.037689,1165.759032) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     40.69     0.00   4526.19
+  1     24.92  4114.99   4069.70
+  2    386.66 58967.84  57451.35
+BucketCount: 555
+WriteAmplification: 14.5922
+
+2019/09/20-16:43:41  ... thread 0: (1000000,45000000) ops and (163777.7,38400.3) ops/second in (6.105838,1171.864870) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     41.33     0.00   4602.62
+  1     25.60  4220.32   4174.01
+  2    394.91 60250.69  58690.74
+BucketCount: 583
+WriteAmplification: 14.6585
+
+2019/09/20-16:43:47  ... thread 0: (1000000,46000000) ops and (164829.7,39051.5) ops/second in (6.066869,1177.931739) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     41.96     0.00   4688.29
+  1     25.79  4251.82   4205.06
+  2    402.56 61424.34  59826.74
+BucketCount: 590
+WriteAmplification: 14.6578
+
+2019/09/20-16:43:53  ... thread 0: (1000000,47000000) ops and (162858.4,39693.5) ops/second in (6.140303,1184.072042) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     43.06     0.00   4787.26
+  1     26.48  4367.85   4319.82
+  2    410.77 62680.99  61038.90
+BucketCount: 618
+WriteAmplification: 14.6526
+
+2019/09/20-16:44:00  ... thread 0: (1000000,48000000) ops and (163711.4,40330.0) ops/second in (6.108309,1190.180351) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     43.99     0.00   4895.65
+  1     27.29  4489.63   4439.83
+  2    410.91 62707.63  61065.30
+BucketCount: 625
+WriteAmplification: 14.3803
+
+2019/09/20-16:44:06  ... thread 0: (1000000,49000000) ops and (165152.2,40961.8) ops/second in (6.055019,1196.235370) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     44.96     0.00   5003.47
+  1     27.81  4582.41   4531.44
+  2    418.63 63887.34  62202.97
+BucketCount: 632
+WriteAmplification: 14.3376
+
+2019/09/20-16:44:12  ... thread 0: (1000000,50000000) ops and (163245.2,41584.8) ops/second in (6.125754,1202.361124) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     45.85     0.00   5110.76
+  1     28.51  4686.98   4634.52
+  2    426.16 65042.39  63313.74
+BucketCount: 632
+WriteAmplification: 14.2951
+
+2019/09/20-16:44:18  ... thread 0: (1000000,51000000) ops and (162841.8,42201.0) ops/second in (6.140931,1208.502055) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     46.92     0.00   5214.53
+  1     29.08  4789.70   4736.06
+  2    434.07 66254.76  64480.31
+BucketCount: 639
+WriteAmplification: 14.2738
+
+2019/09/20-16:44:24  ... thread 0: (1000000,52000000) ops and (163758.1,42812.1) ops/second in (6.106567,1214.608622) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     48.06     0.00   5319.37
+  1     29.34  4814.32   4760.37
+  2    441.65 67406.10  65591.08
+BucketCount: 639
+WriteAmplification: 14.2255
+
+2019/09/20-16:44:30  ... thread 0: (1000000,53000000) ops and (163717.7,43417.1) ops/second in (6.108074,1220.716696) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     49.01     0.00   5440.15
+  1     30.04  4922.52   4866.96
+  2    441.65 67406.10  65591.08
+BucketCount: 639
+WriteAmplification: 13.9515
+
+2019/09/20-16:44:36  ... thread 0: (1000000,54000000) ops and (161086.3,44012.5) ops/second in (6.207852,1226.924548) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     50.26     0.00   5570.21
+  1     30.58  5019.25   4962.37
+  2    450.07 68696.73  66840.06
+BucketCount: 667
+WriteAmplification: 13.8904
+
+2019/09/20-16:44:41  ... thread 1: (1000000,11000000) ops and (5963.1,8928.7) ops/second in (167.698992,1231.987677) seconds
+2019/09/20-16:44:42  ... thread 0: (1000000,55000000) ops and (164285.2,44606.2) ops/second in (6.086975,1233.011523) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     51.24     0.00   5665.79
+  1     30.88  5072.75   5015.07
+  2    457.85 69888.97  67980.75
+BucketCount: 674
+WriteAmplification: 13.8836
+
+2019/09/20-16:44:46  ... thread 3: (1000000,11000000) ops and (5943.4,8894.6) ops/second in (168.255154,1236.709593) seconds
+2019/09/20-16:44:49  ... thread 0: (1000000,56000000) ops and (163555.4,45193.2) ops/second in (6.114135,1239.125658) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     51.95     0.00   5765.47
+  1     31.61  5167.85   5108.68
+  2    465.51 71069.90  69115.97
+BucketCount: 681
+WriteAmplification: 13.8740
+
+2019/09/20-16:44:55  ... thread 0: (1000000,57000000) ops and (161961.2,45772.1) ops/second in (6.174319,1245.299977) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     53.13     0.00   5872.05
+  1     31.98  5233.35   5173.42
+  2    473.47 72298.40  70288.44
+BucketCount: 695
+WriteAmplification: 13.8510
+
+2019/09/20-16:44:58  ... thread 2: (1000000,11000000) ops and (5901.5,8808.9) ops/second in (169.449687,1248.734907) seconds
+2019/09/20-16:45:01  ... thread 0: (1000000,58000000) ops and (160286.7,46343.0) ops/second in (6.238820,1251.538797) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     54.35     0.00   5988.67
+  1     32.52  5320.34   5259.24
+  2    474.58 72477.67  70465.93
+BucketCount: 737
+WriteAmplification: 13.6447
+
+2019/09/20-16:45:07  ... thread 0: (1000000,59000000) ops and (160453.6,46908.4) ops/second in (6.232330,1257.771127) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     55.19     0.00   6085.96
+  1     33.19  5417.32   5354.53
+  2    482.79 73725.00  71655.84
+BucketCount: 758
+WriteAmplification: 13.6538
+
+2019/09/20-16:45:13  ... thread 0: (1000000,60000000) ops and (162237.3,47470.8) ops/second in (6.163812,1263.934939) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     55.93     0.00   6188.76
+  1     33.54  5473.19   5409.57
+  2    490.22 74882.77  72766.61
+BucketCount: 758
+WriteAmplification: 13.6320
+
+2019/09/20-16:45:19  ... thread 0: (1000000,61000000) ops and (162705.2,48028.4) ops/second in (6.146084,1270.081023) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     56.53     0.00   6273.68
+  1     34.02  5553.26   5488.28
+  2    498.19 76092.43  73928.23
+BucketCount: 772
+WriteAmplification: 13.6587
+
+2019/09/20-16:45:26  ... thread 0: (1000000,62000000) ops and (163061.2,48581.2) ops/second in (6.132665,1276.213688) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     57.20     0.00   6346.79
+  1     34.33  5606.47   5540.62
+  2    505.68 77260.74  75039.00
+BucketCount: 772
+WriteAmplification: 13.6961
+
+2019/09/20-16:45:32  ... thread 0: (1000000,63000000) ops and (163863.4,49129.8) ops/second in (6.102645,1282.316333) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     57.87     0.00   6430.42
+  1     34.63  5654.01   5587.50
+  2    505.68 77260.74  75039.00
+BucketCount: 772
+WriteAmplification: 13.5383
+
+2019/09/20-16:45:38  ... thread 0: (1000000,64000000) ops and (162867.3,49671.8) ops/second in (6.139967,1288.456300) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     58.40     0.00   6511.55
+  1     34.91  5699.28   5631.98
+  2    513.19 78420.81  76149.76
+BucketCount: 772
+WriteAmplification: 13.5595
+
+2019/09/20-16:45:44  ... thread 0: (1000000,65000000) ops and (161769.0,50207.1) ops/second in (6.181654,1294.637954) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     59.09     0.00   6620.28
+  1     35.20  5748.20   5680.09
+  2    520.70 79589.02  77260.53
+BucketCount: 772
+WriteAmplification: 13.5283
+
+2019/09/20-16:45:50  ... thread 0: (1000000,66000000) ops and (163264.6,50739.5) ops/second in (6.125027,1300.762981) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     59.96     0.00   6719.27
+  1     35.52  5800.30   5731.28
+  2    528.28 80759.72  78371.30
+BucketCount: 772
+WriteAmplification: 13.5166
+
+2019/09/20-16:45:56  ... thread 0: (1000000,67000000) ops and (160892.1,51263.3) ops/second in (6.215344,1306.978325) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     60.98     0.00   6840.15
+  1     36.07  5875.42   5805.25
+  2    535.76 81930.06  79482.06
+BucketCount: 772
+WriteAmplification: 13.4686
+
+2019/09/20-16:46:03  ... thread 0: (1000000,68000000) ops and (159593.7,51780.2) ops/second in (6.265912,1313.244237) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     62.71     0.00   7008.27
+  1     36.99  6008.62   5936.34
+  2    535.92 81957.43  79509.18
+BucketCount: 779
+WriteAmplification: 13.1921
+
+2019/09/20-16:46:09  ... thread 0: (1000000,69000000) ops and (161203.4,52294.6) ops/second in (6.203343,1319.447580) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     63.60     0.00   7123.52
+  1     37.90  6139.90   6065.50
+  2    543.56 83130.00  80619.94
+BucketCount: 779
+WriteAmplification: 13.1689
+
+2019/09/20-16:46:15  ... thread 0: (1000000,70000000) ops and (160557.4,52803.3) ops/second in (6.228301,1325.675881) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     64.84     0.00   7267.66
+  1     38.29  6206.46   6130.99
+  2    551.31 84322.12  81758.44
+BucketCount: 786
+WriteAmplification: 13.0932
+
+2019/09/20-16:46:21  ... thread 0: (1000000,71000000) ops and (162143.9,53309.6) ops/second in (6.167363,1331.843244) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     65.86     0.00   7389.72
+  1     38.64  6263.58   6187.15
+  2    558.93 85495.18  82869.20
+BucketCount: 786
+WriteAmplification: 13.0514
+
+2019/09/20-16:46:27  ... thread 0: (1000000,72000000) ops and (160844.3,53809.2) ops/second in (6.217191,1338.060435) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     66.84     0.00   7518.46
+  1     39.05  6327.92   6250.40
+  2    566.45 86668.92  83979.97
+BucketCount: 786
+WriteAmplification: 13.0012
+
+2019/09/20-16:46:34  ... thread 0: (1000000,73000000) ops and (162384.9,54306.6) ops/second in (6.158209,1344.218644) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     67.62     0.00   7608.00
+  1     39.57  6414.16   6335.14
+  2    566.45 86668.92  83979.97
+BucketCount: 786
+WriteAmplification: 12.8711
+
+2019/09/20-16:46:40  ... thread 0: (1000000,74000000) ops and (163040.2,54800.5) ops/second in (6.133458,1350.352102) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     68.54     0.00   7697.80
+  1     40.12  6510.04   6429.42
+  2    573.97 87841.49  85090.73
+BucketCount: 786
+WriteAmplification: 12.8891
+
+2019/09/20-16:46:46  ... thread 0: (1000000,75000000) ops and (164089.9,55291.5) ops/second in (6.094221,1356.446323) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     69.23     0.00   7764.74
+  1     40.87  6586.50   6504.48
+  2    581.46 89016.58  86201.50
+BucketCount: 786
+WriteAmplification: 12.9393
+
+2019/09/20-16:46:52  ... thread 0: (1000000,76000000) ops and (163012.9,55776.5) ops/second in (6.134484,1362.580807) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     69.75     0.00   7849.99
+  1     41.13  6627.93   6545.26
+  2    589.09 90219.65  87340.19
+BucketCount: 793
+WriteAmplification: 12.9599
+
+2019/09/20-16:46:58  ... thread 0: (1000000,77000000) ops and (161307.0,56254.5) ops/second in (6.199358,1368.780165) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     70.67     0.00   7945.79
+  1     41.54  6696.32   6612.43
+  2    596.57 91394.73  88450.96
+BucketCount: 793
+WriteAmplification: 12.9640
+
+2019/09/20-16:47:04  ... thread 0: (1000000,78000000) ops and (161457.1,56728.4) ops/second in (6.193596,1374.973761) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     71.74     0.00   8068.84
+  1     42.42  6829.07   6742.85
+  2    596.57 91394.73  88450.96
+BucketCount: 793
+WriteAmplification: 12.7977
+
+2019/09/20-16:47:11  ... thread 0: (1000000,79000000) ops and (161482.7,57198.0) ops/second in (6.192615,1381.166376) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     73.04     0.00   8200.74
+  1     43.13  6932.89   6844.88
+  2    604.02 92567.72  89561.73
+BucketCount: 793
+WriteAmplification: 12.7558
+
+2019/09/20-16:47:17  ... thread 0: (1000000,80000000) ops and (161784.6,57664.0) ops/second in (6.181058,1387.347434) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     74.13     0.00   8309.07
+  1     44.22  7085.34   6994.64
+  2    611.52 93743.63  90672.49
+BucketCount: 793
+WriteAmplification: 12.7543
+
+2019/09/20-16:47:23  ... thread 0: (1000000,81000000) ops and (161558.5,58125.5) ops/second in (6.189708,1393.537142) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     75.28     0.00   8446.29
+  1     45.34  7204.09   7111.29
+  2    619.24 94950.23  91812.78
+BucketCount: 800
+WriteAmplification: 12.7121
+
+2019/09/20-16:47:24  ... thread 1: (1000000,12000000) ops and (6164.0,8607.0) ops/second in (162.233588,1394.221265) seconds
+2019/09/20-16:47:29  ... thread 3: (1000000,12000000) ops and (6149.5,8575.6) ops/second in (162.613912,1399.323505) seconds
+2019/09/20-16:47:29  ... thread 0: (1000000,82000000) ops and (162618.7,58584.5) ops/second in (6.149354,1399.686496) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     76.63     0.00   8583.62
+  1     45.96  7298.23   7203.73
+  2    626.71 96127.79  92923.54
+BucketCount: 800
+WriteAmplification: 12.6649
+
+2019/09/20-16:47:35  ... thread 0: (1000000,83000000) ops and (161406.3,59037.7) ops/second in (6.195546,1405.882042) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     77.84     0.00   8700.69
+  1     46.78  7418.03   7321.44
+  2    626.71 96127.79  92923.54
+BucketCount: 800
+WriteAmplification: 12.5215
+
+2019/09/20-16:47:38  ... thread 2: (1000000,12000000) ops and (6239.0,8516.6) ops/second in (160.282211,1409.017118) seconds
+2019/09/20-16:47:41  ... thread 0: (1000000,84000000) ops and (161907.5,59487.6) ops/second in (6.176368,1412.058410) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     78.90     0.00   8837.07
+  1     47.54  7547.52   7448.69
+  2    634.29 97307.14  94034.31
+BucketCount: 800
+WriteAmplification: 12.4838
+
+2019/09/20-16:47:48  ... thread 0: (1000000,85000000) ops and (161586.2,59933.1) ops/second in (6.188648,1418.247058) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     79.78     0.00   8936.57
+  1     48.28  7661.10   7560.36
+  2    641.91 98489.36  95145.07
+BucketCount: 800
+WriteAmplification: 12.4927
+
+2019/09/20-16:47:54  ... thread 0: (1000000,86000000) ops and (162084.4,60375.6) ops/second in (6.169625,1424.416683) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     80.61     0.00   9043.19
+  1     48.90  7750.22   7648.05
+  2    649.39 99665.60  96255.84
+BucketCount: 800
+WriteAmplification: 12.4897
+
+2019/09/20-16:48:00  ... thread 0: (1000000,87000000) ops and (161186.6,60812.8) ops/second in (6.203988,1430.620671) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     81.43     0.00   9136.80
+  1     49.58  7862.85   7758.79
+  2    656.93 100848.07  97366.61
+BucketCount: 800
+WriteAmplification: 12.5057
+
+2019/09/20-16:48:06  ... thread 0: (1000000,88000000) ops and (163397.3,61249.7) ops/second in (6.120053,1436.740724) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     82.26     0.00   9229.41
+  1     49.92  7921.54   7816.54
+  2    664.30 102021.86  98477.37
+BucketCount: 800
+WriteAmplification: 12.5169
+
+2019/09/20-16:48:12  ... thread 0: (1000000,89000000) ops and (161290.1,61679.6) ops/second in (6.200008,1442.940732) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     83.32     0.00   9356.14
+  1     50.52  8022.11   7915.42
+  2    664.30 102021.86  98477.37
+BucketCount: 800
+WriteAmplification: 12.3714
+
+2019/09/20-16:48:18  ... thread 0: (1000000,90000000) ops and (162950.5,62108.5) ops/second in (6.136832,1449.077564) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     84.04     0.00   9453.83
+  1     50.96  8098.90   7990.89
+  2    671.72 103197.46  99588.14
+BucketCount: 800
+WriteAmplification: 12.3794
+
+2019/09/20-16:48:25  ... thread 0: (1000000,91000000) ops and (161371.1,62531.2) ops/second in (6.196898,1455.274462) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     84.89     0.00   9543.19
+  1     51.65  8214.77   8104.81
+  2    679.25 104382.05 100698.90
+BucketCount: 800
+WriteAmplification: 12.4012
+
+2019/09/20-16:48:31  ... thread 0: (1000000,92000000) ops and (160875.6,62949.4) ops/second in (6.215983,1461.490445) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     85.87     0.00   9660.09
+  1     52.19  8311.93   8200.31
+  2    686.80 105566.92 101809.67
+BucketCount: 800
+WriteAmplification: 12.3881
+
+2019/09/20-16:48:37  ... thread 0: (1000000,93000000) ops and (161593.9,63365.4) ops/second in (6.188352,1467.678797) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     86.96     0.00   9777.07
+  1     52.80  8421.47   8307.95
+  2    694.40 106753.78 102920.44
+BucketCount: 800
+WriteAmplification: 12.3765
+
+2019/09/20-16:48:43  ... thread 0: (1000000,94000000) ops and (160008.2,63775.1) ops/second in (6.249680,1473.928477) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     88.09     0.00   9901.88
+  1     53.55  8553.14   8437.31
+  2    694.40 106753.78 102920.44
+BucketCount: 800
+WriteAmplification: 12.2461
+
+2019/09/20-16:48:50  ... thread 0: (1000000,95000000) ops and (161060.8,64183.2) ops/second in (6.208834,1480.137311) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     88.90     0.00  10026.46
+  1     54.32  8664.37   8546.64
+  2    702.03 107941.91 104031.20
+BucketCount: 800
+WriteAmplification: 12.2281
+
+2019/09/20-16:48:56  ... thread 0: (1000000,96000000) ops and (162244.9,64589.9) ops/second in (6.163521,1486.300832) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     89.94     0.00  10159.68
+  1     55.20  8815.75   8695.38
+  2    709.62 109122.67 105141.97
+BucketCount: 800
+WriteAmplification: 12.2048
+
+2019/09/20-16:49:02  ... thread 0: (1000000,97000000) ops and (160438.1,64990.2) ops/second in (6.232934,1492.533766) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     91.03     0.00  10287.81
+  1     55.93  8945.26   8822.60
+  2    717.15 110308.24 106252.73
+BucketCount: 800
+WriteAmplification: 12.1856
+
+2019/09/20-16:49:08  ... thread 0: (1000000,98000000) ops and (161551.7,65389.0) ops/second in (6.189968,1498.723734) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     92.02     0.00  10391.35
+  1     56.60  9047.14   8922.74
+  2    724.56 111490.97 107363.50
+BucketCount: 800
+WriteAmplification: 12.1907
+
+2019/09/20-16:49:14  ... thread 0: (1000000,99000000) ops and (159265.7,65780.6) ops/second in (6.278816,1505.002550) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     92.98     0.00  10503.95
+  1     57.33  9166.91   9040.40
+  2    724.56 111490.97 107363.50
+BucketCount: 800
+WriteAmplification: 12.0819
+
+2019/09/20-16:49:21  ... thread 0: (1000000,100000000) ops and (161031.1,66172.0) ops/second in (6.209981,1511.212531) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     94.06     0.00  10622.67
+  1     58.09  9288.89   9160.37
+  2    732.29 112673.86 108474.27
+BucketCount: 800
+WriteAmplification: 12.0739
+
+2019/09/20-16:49:27  ... thread 0: (1000000,101000000) ops and (159766.8,66558.1) ops/second in (6.259121,1517.471652) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     94.71     0.00  10714.97
+  1     58.86  9389.98   9259.65
+  2    739.87 113857.50 109585.03
+BucketCount: 800
+WriteAmplification: 12.0915
+
+2019/09/20-16:49:33  ... thread 0: (1000000,102000000) ops and (163150.3,66946.7) ops/second in (6.129317,1523.600969) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     95.55     0.00  10808.33
+  1     59.80  9513.35   9380.90
+  2    747.33 115038.09 110695.80
+BucketCount: 800
+WriteAmplification: 12.1096
+
+2019/09/20-16:49:39  ... thread 0: (1000000,103000000) ops and (160690.4,67328.0) ops/second in (6.223147,1529.824116) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     96.50     0.00  10912.91
+  1     60.66  9623.70   9489.36
+  2    754.87 116220.30 111806.56
+BucketCount: 800
+WriteAmplification: 12.1149
+
+2019/09/20-16:49:45  ... thread 0: (1000000,104000000) ops and (160601.4,67706.1) ops/second in (6.226597,1536.050713) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     97.58     0.00  11016.68
+  1     61.78  9758.95   9622.31
+  2    762.41 117399.48 112917.33
+BucketCount: 800
+WriteAmplification: 12.1231
+
+2019/09/20-16:49:50  ... thread 1: (1000000,13000000) ops and (6827.2,8437.8) ops/second in (146.473805,1540.695070) seconds
+2019/09/20-16:49:52  ... thread 0: (1000000,105000000) ops and (159531.1,68079.3) ops/second in (6.268372,1542.319085) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     98.39     0.00  11134.45
+  1     62.72  9906.40   9767.17
+  2    762.41 117399.48 112917.33
+BucketCount: 800
+WriteAmplification: 12.0185
+
+2019/09/20-16:49:54  ... thread 3: (1000000,13000000) ops and (6898.2,8418.1) ops/second in (144.965541,1544.289046) seconds
+2019/09/20-16:49:58  ... thread 0: (1000000,106000000) ops and (161090.9,68452.2) ops/second in (6.207674,1548.526759) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0     99.21     0.00  11239.74
+  1     63.36 10019.26   9878.05
+  2    769.88 118580.46 114028.10
+BucketCount: 800
+WriteAmplification: 12.0239
+
+2019/09/20-16:50:03  ... thread 2: (1000000,13000000) ops and (6929.8,8369.2) ops/second in (144.304522,1553.321640) seconds
+2019/09/20-16:50:04  ... thread 0: (1000000,107000000) ops and (160173.2,68820.5) ops/second in (6.243242,1554.770001) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    100.07     0.00  11381.73
+  1     64.17 10145.85  10002.48
+  2    777.32 119763.69 115138.86
+BucketCount: 800
+WriteAmplification: 11.9949
+
+2019/09/20-16:50:10  ... thread 0: (1000000,108000000) ops and (160308.9,69186.1) ops/second in (6.237957,1561.007958) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    100.94     0.00  11489.85
+  1     65.30 10309.40  10163.12
+  2    784.69 120952.67 116249.63
+BucketCount: 800
+WriteAmplification: 12.0021
+
+2019/09/20-16:50:17  ... thread 0: (1000000,109000000) ops and (161102.2,69550.1) ops/second in (6.207238,1567.215196) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    102.00     0.00  11609.55
+  1     66.06 10441.34  10292.73
+  2    792.30 122143.53 117360.39
+BucketCount: 800
+WriteAmplification: 11.9955
+
+2019/09/20-16:50:23  ... thread 0: (1000000,110000000) ops and (161727.6,69912.4) ops/second in (6.183236,1573.398432) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    102.83     0.00  11728.54
+  1     67.20 10619.48  10467.67
+  2    792.30 122143.53 117360.39
+BucketCount: 800
+WriteAmplification: 11.8989
+
+2019/09/20-16:50:29  ... thread 0: (1000000,111000000) ops and (159927.5,70268.7) ops/second in (6.252834,1579.651266) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    103.78     0.00  11840.73
+  1     67.94 10750.09  10595.92
+  2    799.86 123350.11 118471.16
+BucketCount: 800
+WriteAmplification: 11.9003
+
+2019/09/20-16:50:35  ... thread 0: (1000000,112000000) ops and (162097.8,70625.9) ops/second in (6.169115,1585.820381) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    104.42     0.00  11942.51
+  1     68.81 10874.64  10718.19
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 11.9106
+
+2019/09/20-16:50:41  ... thread 0: (1000000,113000000) ops and (161487.2,70979.3) ops/second in (6.192441,1592.012822) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    105.10     0.00  12073.16
+  1     69.38 10972.77  10814.53
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 11.8005
+
+2019/09/20-16:50:48  ... thread 0: (1000000,114000000) ops and (160286.4,71327.9) ops/second in (6.238832,1598.251654) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    105.66     0.00  12176.38
+  1     70.44 11156.11  10994.42
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 11.7237
+
+2019/09/20-16:50:54  ... thread 0: (1000000,115000000) ops and (162282.5,71677.3) ops/second in (6.162092,1604.413746) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    106.31     0.00  12283.30
+  1     70.82 11223.88  11060.99
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 11.6358
+
+2019/09/20-16:51:00  ... thread 0: (1000000,116000000) ops and (162668.3,72024.6) ops/second in (6.147481,1610.561227) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    106.96     0.00  12388.25
+  1     71.47 11339.99  11175.10
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 11.5549
+
+2019/09/20-16:51:06  ... thread 0: (1000000,117000000) ops and (160655.1,72365.8) ops/second in (6.224514,1616.785741) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    107.63     0.00  12490.93
+  1     71.93 11427.71  11261.34
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 11.4751
+
+2019/09/20-16:51:12  ... thread 0: (1000000,118000000) ops and (161034.2,72705.1) ops/second in (6.209861,1622.995602) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    108.37     0.00  12608.17
+  1     72.15 11466.42  11299.39
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 11.3807
+
+2019/09/20-16:51:19  ... thread 0: (1000000,119000000) ops and (162122.0,73043.6) ops/second in (6.168196,1629.163798) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    109.16     0.00  12732.17
+  1     72.63 11555.94  11387.39
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 11.2865
+
+2019/09/20-16:51:25  ... thread 0: (1000000,120000000) ops and (161545.0,73378.6) ops/second in (6.190224,1635.354022) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    109.88     0.00  12846.80
+  1     73.24 11668.33  11497.89
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 11.2033
+
+2019/09/20-16:51:31  ... thread 0: (1000000,121000000) ops and (160895.9,73710.0) ops/second in (6.215198,1641.569220) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    110.43     0.00  12933.45
+  1     73.62 11738.53  11566.88
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 11.1403
+
+2019/09/20-16:51:37  ... thread 0: (1000000,122000000) ops and (160491.6,74038.1) ops/second in (6.230854,1647.800074) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    111.14     0.00  13047.54
+  1     74.22 11848.50  11674.96
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 11.0599
+
+2019/09/20-16:51:43  ... thread 1: (1000000,14000000) ops and (8836.7,8465.0) ops/second in (113.164160,1653.859230) seconds
+2019/09/20-16:51:43  ... thread 0: (1000000,123000000) ops and (159267.0,74361.6) ops/second in (6.278765,1654.078839) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    111.88     0.00  13171.39
+  1     74.87 11968.34  11792.78
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 10.9742
+
+2019/09/20-16:51:46  ... thread 3: (1000000,14000000) ops and (8896.2,8450.5) ops/second in (112.408050,1656.697096) seconds
+2019/09/20-16:51:50  ... thread 0: (1000000,124000000) ops and (158864.8,74682.0) ops/second in (6.294659,1660.373498) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    112.59     0.00  13289.36
+  1     75.28 12041.58  11864.81
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 10.8911
+
+2019/09/20-16:51:53  ... thread 2: (1000000,14000000) ops and (9029.5,8413.1) ops/second in (110.748184,1664.069824) seconds
+2019/09/20-16:51:56  ... thread 0: (1000000,125000000) ops and (158642.0,74999.5) ops/second in (6.303499,1666.676997) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    113.24     0.00  13398.92
+  1     76.02 12181.34  12002.09
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 10.8205
+
+2019/09/20-16:52:02  ... thread 0: (1000000,126000000) ops and (159812.2,75316.8) ops/second in (6.257343,1672.934340) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    113.96     0.00  13518.90
+  1     76.67 12301.10  12119.82
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 10.7420
+
+2019/09/20-16:52:09  ... thread 0: (1000000,127000000) ops and (157169.6,75626.9) ops/second in (6.362553,1679.296893) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    114.77     0.00  13655.14
+  1     77.23 12402.97  12219.97
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 10.6522
+
+2019/09/20-16:52:15  ... thread 0: (1000000,128000000) ops and (160637.7,75940.9) ops/second in (6.225187,1685.522080) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    115.33     0.00  13745.99
+  1     77.62 12476.04  12291.76
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 10.5936
+
+2019/09/20-16:52:21  ... thread 0: (1000000,129000000) ops and (158585.1,76248.9) ops/second in (6.305762,1691.827842) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    116.09     0.00  13876.69
+  1     78.24 12596.50  12410.15
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 10.5118
+
+2019/09/20-16:52:27  ... thread 0: (1000000,130000000) ops and (159761.1,76556.7) ops/second in (6.259347,1698.087189) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    116.76     0.00  13986.03
+  1     78.69 12684.17  12496.35
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 10.4436
+
+2019/09/20-16:52:34  ... thread 0: (1000000,131000000) ops and (159964.6,76862.7) ops/second in (6.251382,1704.338571) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    117.24     0.00  14068.78
+  1     79.29 12799.21  12609.33
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 10.3961
+
+2019/09/20-16:52:40  ... thread 0: (1000000,132000000) ops and (158363.8,77163.5) ops/second in (6.314575,1710.653146) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    117.85     0.00  14170.66
+  1     79.84 12902.03  12710.30
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 10.3356
+
+2019/09/20-16:52:46  ... thread 0: (1000000,133000000) ops and (159762.2,77464.6) ops/second in (6.259301,1716.912447) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    118.46     0.00  14272.77
+  1     80.35 12997.90  12804.47
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 10.2755
+
+2019/09/20-16:52:53  ... thread 0: (1000000,134000000) ops and (158526.4,77761.4) ops/second in (6.308096,1723.220543) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    119.25     0.00  14403.38
+  1     81.06 13128.86  12933.17
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 10.2003
+
+2019/09/20-16:52:59  ... thread 0: (1000000,135000000) ops and (160394.0,78059.3) ops/second in (6.234648,1729.455191) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    119.90     0.00  14512.03
+  1     81.70 13249.04  13051.24
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 10.1395
+
+2019/09/20-16:53:05  ... thread 0: (1000000,136000000) ops and (158723.2,78352.1) ops/second in (6.300276,1735.755467) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    120.59     0.00  14626.77
+  1     82.21 13343.24  13143.78
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 10.0742
+
+2019/09/20-16:53:11  ... thread 0: (1000000,137000000) ops and (159671.3,78644.4) ops/second in (6.262865,1742.018332) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    121.25     0.00  14739.23
+  1     82.99 13490.10  13288.04
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 10.0147
+
+2019/09/20-16:53:18  ... thread 0: (1000000,138000000) ops and (157733.5,78931.2) ops/second in (6.339806,1748.358138) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    122.01     0.00  14865.62
+  1     83.71 13623.55  13419.22
+  2    807.48 124561.08 119581.93
+BucketCount: 800
+WriteAmplification: 9.9469
+
+2019/09/20-16:53:24  ... thread 0: (1000000,139000000) ops and (158874.6,79218.0) ops/second in (6.294271,1754.652409) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    122.75     0.00  14987.85
+  1     84.45 13762.78  13555.98
+  2    807.58 124581.65 119601.69
+BucketCount: 800
+WriteAmplification: 9.8844
+
+2019/09/20-16:53:24  ... thread 1: (1000000,15000000) ops and (9876.2,8546.5) ops/second in (101.254012,1755.113242) seconds
+2019/09/20-16:53:27  ... thread 3: (1000000,15000000) ops and (9868.3,8532.3) ops/second in (101.334501,1758.031597) seconds
+2019/09/20-16:53:30  ... thread 0: (1000000,140000000) ops and (158728.1,79502.4) ops/second in (6.300081,1760.952490) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    123.44     0.00  15105.03
+  1     84.99 13864.62  13656.11
+  2    807.58 124581.65 119601.69
+BucketCount: 800
+WriteAmplification: 9.8221
+
+2019/09/20-16:53:35  ... thread 2: (1000000,15000000) ops and (9856.2,8496.0) ops/second in (101.459425,1765.529249) seconds
+2019/09/20-16:53:37  ... thread 0: (1000000,141000000) ops and (157052.4,79781.8) ops/second in (6.367302,1767.319792) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    124.18     0.00  15228.89
+  1     85.54 13968.01  13757.74
+  2    807.58 124581.65 119601.69
+BucketCount: 800
+WriteAmplification: 9.7570
+
+2019/09/20-16:53:43  ... thread 0: (1000000,142000000) ops and (160105.0,80064.7) ops/second in (6.245902,1773.565694) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    124.69     0.00  15316.63
+  1     86.16 14087.92  13875.53
+  2    807.58 124581.65 119601.69
+BucketCount: 800
+WriteAmplification: 9.7145
+
+2019/09/20-16:53:49  ... thread 0: (1000000,143000000) ops and (158018.2,80341.9) ops/second in (6.328384,1779.894078) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    125.34     0.00  15425.35
+  1     86.68 14183.70  13969.69
+  2    807.58 124581.65 119601.69
+BucketCount: 800
+WriteAmplification: 9.6592
+
+2019/09/20-16:53:56  ... thread 0: (1000000,144000000) ops and (158486.1,80617.9) ops/second in (6.309700,1786.203778) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    125.93     0.00  15523.76
+  1     87.42 14322.30  14105.96
+  2    807.58 124581.65 119601.69
+BucketCount: 800
+WriteAmplification: 9.6131
+
+2019/09/20-16:54:02  ... thread 0: (1000000,145000000) ops and (159493.9,80893.8) ops/second in (6.269834,1792.473612) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    126.63     0.00  15642.75
+  1     88.09 14449.22  14230.71
+  2    807.70 124603.96 119623.04
+BucketCount: 800
+WriteAmplification: 9.5569
+
+2019/09/20-16:54:08  ... thread 0: (1000000,146000000) ops and (160118.8,81168.9) ops/second in (6.245362,1798.718974) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    127.25     0.00  15748.81
+  1     88.60 14543.25  14323.17
+  2    807.70 124603.96 119623.04
+BucketCount: 800
+WriteAmplification: 9.5052
+
+2019/09/20-16:54:14  ... thread 0: (1000000,147000000) ops and (157449.7,81437.3) ops/second in (6.351233,1805.070207) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    127.97     0.00  15869.75
+  1     89.02 14622.58  14401.11
+  2    807.82 124625.52 119643.75
+BucketCount: 800
+WriteAmplification: 9.4466
+
+2019/09/20-16:54:21  ... thread 0: (1000000,148000000) ops and (160114.1,81708.6) ops/second in (6.245546,1811.315753) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    128.54     0.00  15964.55
+  1     89.77 14760.63  14536.75
+  2    807.82 124625.52 119643.75
+BucketCount: 800
+WriteAmplification: 9.4049
+
+2019/09/20-16:54:27  ... thread 0: (1000000,149000000) ops and (158402.8,81974.9) ops/second in (6.313019,1817.628772) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    129.28     0.00  16086.39
+  1     90.29 14854.78  14629.32
+  2    807.82 124625.52 119643.75
+BucketCount: 800
+WriteAmplification: 9.3470
+
+2019/09/20-16:54:33  ... thread 0: (1000000,150000000) ops and (158564.6,82239.8) ops/second in (6.306579,1823.935351) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    129.99     0.00  16207.51
+  1     90.80 14952.41  14725.27
+  2    807.82 124625.52 119643.75
+BucketCount: 800
+WriteAmplification: 9.2905
+
+2019/09/20-16:54:40  ... thread 0: (1000000,151000000) ops and (160123.6,82505.5) ops/second in (6.245176,1830.180527) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    130.60     0.00  16308.15
+  1     91.38 15061.34  14832.25
+  2    807.82 124625.52 119643.75
+BucketCount: 800
+WriteAmplification: 9.2459
+
+2019/09/20-16:54:46  ... thread 0: (1000000,152000000) ops and (158727.6,82767.0) ops/second in (6.300103,1836.480630) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    131.44     0.00  16449.75
+  1     92.05 15180.95  14949.74
+  2    807.82 124625.52 119643.75
+BucketCount: 800
+WriteAmplification: 9.1821
+
+2019/09/20-16:54:52  ... thread 0: (1000000,153000000) ops and (160241.0,83029.4) ops/second in (6.240602,1842.721232) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    132.12     0.00  16563.63
+  1     92.81 15321.81  15088.13
+  2    807.82 124625.52 119643.75
+BucketCount: 800
+WriteAmplification: 9.1342
+
+2019/09/20-16:54:58  ... thread 0: (1000000,154000000) ops and (159262.3,83288.3) ops/second in (6.278949,1849.000181) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    132.74     0.00  16667.10
+  1     93.38 15425.56  15190.08
+  2    808.06 124671.25 119687.53
+BucketCount: 800
+WriteAmplification: 9.0924
+
+2019/09/20-16:55:05  ... thread 0: (1000000,155000000) ops and (159929.3,83546.6) ops/second in (6.252764,1855.252945) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    133.40     0.00  16779.06
+  1     93.87 15518.76  15281.65
+  2    808.17 124692.36 119707.88
+BucketCount: 800
+WriteAmplification: 9.0451
+
+2019/09/20-16:55:11  ... thread 1: (1000000,16000000) ops and (9410.7,8595.8) ops/second in (106.261814,1861.375056) seconds
+2019/09/20-16:55:11  ... thread 0: (1000000,156000000) ops and (158969.8,83801.4) ops/second in (6.290501,1861.543446) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    134.07     0.00  16890.24
+  1     94.43 15621.70  15382.83
+  2    808.29 124716.05 119730.48
+BucketCount: 800
+WriteAmplification: 8.9995
+
+2019/09/20-16:55:14  ... thread 3: (1000000,16000000) ops and (9379.9,8580.7) ops/second in (106.610983,1864.642580) seconds
+2019/09/20-16:55:17  ... thread 0: (1000000,157000000) ops and (160312.9,84057.0) ops/second in (6.237803,1867.781249) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    134.71     0.00  16996.64
+  1     95.12 15748.48  15507.38
+  2    808.75 124801.62 119812.93
+BucketCount: 800
+WriteAmplification: 8.9616
+
+2019/09/20-16:55:22  ... thread 2: (1000000,16000000) ops and (9330.4,8543.8) ops/second in (107.176626,1872.705875) seconds
+2019/09/20-16:55:23  ... thread 0: (1000000,158000000) ops and (159003.6,84308.5) ops/second in (6.289167,1874.070416) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    135.39     0.00  17109.75
+  1     95.72 15852.79  15609.88
+  2    809.10 124868.43 119877.07
+BucketCount: 800
+WriteAmplification: 8.9187
+
+2019/09/20-16:55:30  ... thread 0: (1000000,159000000) ops and (160200.7,84560.4) ops/second in (6.242169,1880.312585) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    136.01     0.00  17212.66
+  1     96.31 15964.16  15719.32
+  2    809.10 124868.43 119877.07
+BucketCount: 800
+WriteAmplification: 8.8777
+
+2019/09/20-16:55:36  ... thread 0: (1000000,160000000) ops and (158977.2,84808.5) ops/second in (6.290211,1886.602796) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    136.74     0.00  17335.91
+  1     96.86 16067.41  15820.78
+  2    809.56 124954.20 119959.72
+BucketCount: 800
+WriteAmplification: 8.8323
+
+2019/09/20-16:55:42  ... thread 0: (1000000,161000000) ops and (159942.6,85056.7) ops/second in (6.252243,1892.855039) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    137.36     0.00  17439.37
+  1     97.68 16220.68  15971.33
+  2    809.91 125019.52 120022.59
+BucketCount: 800
+WriteAmplification: 8.7981
+
+2019/09/20-16:55:48  ... thread 0: (1000000,162000000) ops and (159980.6,85303.3) ops/second in (6.250759,1899.105798) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    137.96     0.00  17538.43
+  1     98.23 16321.30  16070.24
+  2    810.40 125106.95 120106.82
+BucketCount: 800
+WriteAmplification: 8.7645
+
+2019/09/20-16:55:55  ... thread 0: (1000000,163000000) ops and (160537.3,85549.3) ops/second in (6.229083,1905.334881) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    138.61     0.00  17643.78
+  1     98.90 16448.10  16194.82
+  2    810.54 125131.64 120130.33
+BucketCount: 800
+WriteAmplification: 8.7265
+
+2019/09/20-16:56:01  ... thread 0: (1000000,164000000) ops and (157853.3,85788.9) ops/second in (6.334994,1911.669875) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    139.49     0.00  17792.90
+  1     99.35 16531.00  16276.23
+  2    811.01 125218.82 120214.28
+BucketCount: 800
+WriteAmplification: 8.6711
+
+2019/09/20-16:56:07  ... thread 0: (1000000,165000000) ops and (161135.6,86032.7) ops/second in (6.205952,1917.875827) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    140.11     0.00  17898.06
+  1    100.14 16678.56  16421.28
+  2    811.01 125218.82 120214.28
+BucketCount: 800
+WriteAmplification: 8.6341
+
+2019/09/20-16:56:14  ... thread 0: (1000000,166000000) ops and (158797.8,86270.8) ops/second in (6.297315,1924.173142) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    140.81     0.00  18015.46
+  1    100.88 16814.50  16554.77
+  2    811.25 125262.56 120256.38
+BucketCount: 800
+WriteAmplification: 8.5941
+
+2019/09/20-16:56:20  ... thread 0: (1000000,167000000) ops and (159356.8,86508.4) ops/second in (6.275226,1930.448368) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    141.43     0.00  18118.27
+  1    101.54 16935.41  16673.45
+  2    811.62 125331.22 120322.27
+BucketCount: 800
+WriteAmplification: 8.5612
+
+2019/09/20-16:56:26  ... thread 0: (1000000,168000000) ops and (158360.5,86742.7) ops/second in (6.314707,1936.763075) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    142.13     0.00  18234.80
+  1    102.24 17062.31  16798.15
+  2    812.00 125397.70 120386.23
+BucketCount: 800
+WriteAmplification: 8.5232
+
+2019/09/20-16:56:32  ... thread 0: (1000000,169000000) ops and (159331.9,86977.1) ops/second in (6.276207,1943.039282) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    142.78     0.00  18336.83
+  1    103.11 17224.23  16957.17
+  2    812.26 125443.51 120430.29
+BucketCount: 800
+WriteAmplification: 8.4924
+
+2019/09/20-16:56:39  ... thread 0: (1000000,170000000) ops and (157945.4,87207.6) ops/second in (6.331301,1949.370583) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    143.54     0.00  18463.07
+  1    103.79 17345.18  17075.96
+  2    812.50 125489.48 120474.47
+BucketCount: 800
+WriteAmplification: 8.4500
+
+2019/09/20-16:56:45  ... thread 0: (1000000,171000000) ops and (158085.7,87436.9) ops/second in (6.325681,1955.696264) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    144.28     0.00  18585.29
+  1    104.29 17429.92  17159.23
+  2    813.13 125601.62 120582.35
+BucketCount: 800
+WriteAmplification: 8.4113
+
+2019/09/20-16:56:51  ... thread 0: (1000000,172000000) ops and (159831.0,87667.8) ops/second in (6.256607,1961.952871) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    144.91     0.00  18685.52
+  1    104.71 17507.84  17235.82
+  2    813.48 125667.25 120645.57
+BucketCount: 800
+WriteAmplification: 8.3791
+
+2019/09/20-16:56:58  ... thread 0: (1000000,173000000) ops and (159975.8,87897.4) ops/second in (6.250944,1968.203815) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    145.46     0.00  18776.85
+  1    105.19 17596.91  17323.31
+  2    813.74 125715.87 120692.11
+BucketCount: 800
+WriteAmplification: 8.3503
+
+2019/09/20-16:57:01  ... thread 1: (1000000,17000000) ops and (9078.9,8622.8) ops/second in (110.145963,1971.521019) seconds
+2019/09/20-16:57:04  ... thread 0: (1000000,174000000) ops and (159919.7,88125.5) ops/second in (6.253139,1974.456954) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    146.20     0.00  18901.47
+  1    105.97 17738.63  17462.61
+  2    813.86 125739.52 120714.81
+BucketCount: 800
+WriteAmplification: 8.3104
+
+2019/09/20-16:57:04  ... thread 3: (1000000,17000000) ops and (9074.1,8608.3) ops/second in (110.203602,1974.846182) seconds
+2019/09/20-16:57:10  ... thread 0: (1000000,175000000) ops and (159635.0,88351.7) ops/second in (6.264292,1980.721246) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    146.89     0.00  19017.24
+  1    106.51 17835.01  17557.33
+  2    814.12 125786.96 120760.37
+BucketCount: 800
+WriteAmplification: 8.2733
+
+2019/09/20-16:57:12  ... thread 2: (1000000,17000000) ops and (9083.6,8573.8) ops/second in (110.088752,1982.794627) seconds
+2019/09/20-16:57:16  ... thread 0: (1000000,176000000) ops and (160957.0,88578.7) ops/second in (6.212838,1986.934084) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    147.50     0.00  19119.33
+  1    106.79 17886.75  17608.17
+  2    814.48 125855.91 120826.63
+BucketCount: 800
+WriteAmplification: 8.2406
+
+2019/09/20-16:57:23  ... thread 0: (1000000,177000000) ops and (158342.4,88799.7) ops/second in (6.315426,1993.249510) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    148.13     0.00  19224.03
+  1    107.51 18020.56  17739.71
+  2    814.61 125878.96 120848.78
+BucketCount: 800
+WriteAmplification: 8.2091
+
+2019/09/20-16:57:29  ... thread 0: (1000000,178000000) ops and (159188.0,89020.9) ops/second in (6.281882,1999.531392) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    148.88     0.00  19351.18
+  1    107.87 18087.07  17805.04
+  2    814.98 125948.02 120915.17
+BucketCount: 800
+WriteAmplification: 8.1686
+
+2019/09/20-16:57:35  ... thread 0: (1000000,179000000) ops and (158544.0,89239.5) ops/second in (6.307397,2005.838789) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    149.63     0.00  19474.24
+  1    108.51 18198.12  17914.17
+  2    815.37 126018.23 120982.60
+BucketCount: 800
+WriteAmplification: 8.1323
+
+2019/09/20-16:57:41  ... thread 0: (1000000,180000000) ops and (159915.7,89459.1) ops/second in (6.253296,2012.092085) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    150.26     0.00  19578.78
+  1    109.01 18288.78  18003.29
+  2    816.00 126139.06 121098.34
+BucketCount: 800
+WriteAmplification: 8.1047
+
+2019/09/20-16:57:48  ... thread 0: (1000000,181000000) ops and (158338.4,89674.6) ops/second in (6.315587,2018.407672) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    150.95     0.00  19693.10
+  1    109.61 18398.76  18111.37
+  2    816.40 126211.70 121168.01
+BucketCount: 800
+WriteAmplification: 8.0725
+
+2019/09/20-16:57:54  ... thread 0: (1000000,182000000) ops and (158306.5,89888.8) ops/second in (6.316862,2024.724534) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    151.70     0.00  19812.87
+  1    110.23 18513.25  18223.90
+  2    816.80 126284.62 121237.85
+BucketCount: 800
+WriteAmplification: 8.0389
+
+2019/09/20-16:58:00  ... thread 0: (1000000,183000000) ops and (159683.5,90104.0) ops/second in (6.262386,2030.986920) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    152.29     0.00  19911.40
+  1    110.92 18642.65  18351.08
+  2    817.33 126375.36 121325.12
+BucketCount: 800
+WriteAmplification: 8.0149
+
+2019/09/20-16:58:07  ... thread 0: (1000000,184000000) ops and (159246.2,90317.1) ops/second in (6.279586,2037.266506) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    153.14     0.00  20052.12
+  1    111.69 18776.82  18482.95
+  2    818.11 126517.21 121461.36
+BucketCount: 800
+WriteAmplification: 7.9790
+
+2019/09/20-16:58:13  ... thread 0: (1000000,185000000) ops and (160231.2,90530.6) ops/second in (6.240981,2043.507487) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    153.84     0.00  20160.45
+  1    112.46 18915.35  18619.06
+  2    819.01 126683.84 121621.12
+BucketCount: 800
+WriteAmplification: 7.9562
+
+2019/09/20-16:58:19  ... thread 0: (1000000,186000000) ops and (158742.9,90740.3) ops/second in (6.299496,2049.806983) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    154.46     0.00  20257.70
+  1    113.03 19021.51  18723.35
+  2    820.30 126913.89 121842.20
+BucketCount: 800
+WriteAmplification: 7.9389
+
+2019/09/20-16:58:25  ... thread 0: (1000000,187000000) ops and (158970.3,90949.0) ops/second in (6.290483,2056.097466) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    155.09     0.00  20364.07
+  1    113.70 19143.35  18843.12
+  2    821.21 127082.34 122003.70
+BucketCount: 800
+WriteAmplification: 7.9164
+
+2019/09/20-16:58:32  ... thread 0: (1000000,188000000) ops and (159631.1,91157.6) ops/second in (6.264445,2062.361911) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    155.66     0.00  20459.14
+  1    114.28 19245.00  18942.97
+  2    822.15 127257.80 122171.38
+BucketCount: 800
+WriteAmplification: 7.8974
+
+2019/09/20-16:58:38  ... thread 0: (1000000,189000000) ops and (158029.8,91362.2) ops/second in (6.327922,2068.689833) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    156.42     0.00  20586.36
+  1    114.80 19337.35  19033.72
+  2    822.66 127353.38 122263.11
+BucketCount: 800
+WriteAmplification: 7.8636
+
+2019/09/20-16:58:44  ... thread 0: (1000000,190000000) ops and (159992.6,91568.9) ops/second in (6.250291,2074.940124) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    157.12     0.00  20699.01
+  1    115.63 19488.45  19182.18
+  2    823.91 127582.74 122482.36
+BucketCount: 800
+WriteAmplification: 7.8440
+
+2019/09/20-16:58:51  ... thread 0: (1000000,191000000) ops and (158327.6,91771.5) ops/second in (6.316018,2081.256142) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    157.78     0.00  20806.49
+  1    116.31 19613.64  19305.20
+  2    824.96 127770.92 122663.07
+BucketCount: 800
+WriteAmplification: 7.8233
+
+2019/09/20-16:58:53  ... thread 1: (1000000,18000000) ops and (8891.8,8637.3) ops/second in (112.462912,2083.983931) seconds
+2019/09/20-16:58:57  ... thread 0: (1000000,192000000) ops and (160031.6,91975.8) ops/second in (6.248765,2087.504907) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    158.47     0.00  20915.55
+  1    116.91 19721.87  19411.51
+  2    826.15 127985.15 122868.67
+BucketCount: 800
+WriteAmplification: 7.8026
+
+2019/09/20-16:58:57  ... thread 3: (1000000,18000000) ops and (8839.4,8620.8) ops/second in (113.129488,2087.975670) seconds
+2019/09/20-16:59:03  ... thread 0: (1000000,193000000) ops and (157935.8,92175.3) ops/second in (6.331687,2093.836594) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    159.21     0.00  21037.68
+  1    117.71 19865.67  19552.83
+  2    827.09 128158.47 123034.62
+BucketCount: 800
+WriteAmplification: 7.7777
+
+2019/09/20-16:59:06  ... thread 2: (1000000,18000000) ops and (8793.1,8585.7) ops/second in (113.725016,2096.519643) seconds
+2019/09/20-16:59:09  ... thread 0: (1000000,194000000) ops and (159806.1,92376.8) ops/second in (6.257585,2100.094179) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    159.92     0.00  21160.34
+  1    118.43 19998.83  19683.63
+  2    827.22 128181.21 123056.49
+BucketCount: 800
+WriteAmplification: 7.7456
+
+2019/09/20-16:59:16  ... thread 0: (1000000,195000000) ops and (158808.5,92575.4) ops/second in (6.296892,2106.391071) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    160.52     0.00  21262.96
+  1    118.85 20075.69  19759.19
+  2    828.13 128352.06 123220.14
+BucketCount: 800
+WriteAmplification: 7.7243
+
+2019/09/20-16:59:22  ... thread 0: (1000000,196000000) ops and (158907.4,92773.0) ops/second in (6.292975,2112.684046) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    161.18     0.00  21372.82
+  1    119.25 20150.58  19832.75
+  2    828.67 128451.71 123315.49
+BucketCount: 800
+WriteAmplification: 7.6977
+
+2019/09/20-16:59:28  ... thread 0: (1000000,197000000) ops and (159629.9,92970.6) ops/second in (6.264489,2118.948535) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    161.99     0.00  21504.68
+  1    120.05 20298.34  19977.99
+  2    829.32 128574.31 123433.01
+BucketCount: 800
+WriteAmplification: 7.6688
+
+2019/09/20-16:59:35  ... thread 0: (1000000,198000000) ops and (158839.4,93165.8) ops/second in (6.295669,2125.244204) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    162.68     0.00  21620.38
+  1    120.64 20409.10  20086.85
+  2    829.75 128649.31 123504.84
+BucketCount: 800
+WriteAmplification: 7.6415
+
+2019/09/20-16:59:41  ... thread 0: (1000000,199000000) ops and (159656.1,93361.1) ops/second in (6.263461,2131.507665) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    163.26     0.00  21719.35
+  1    121.31 20528.52  20204.16
+  2    831.06 128897.17 123742.15
+BucketCount: 800
+WriteAmplification: 7.6276
+
+2019/09/20-16:59:47  ... thread 0: (1000000,200000000) ops and (158431.3,93553.3) ops/second in (6.311886,2137.819551) seconds
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    163.93     0.00  21826.77
+  1    121.88 20636.22  20310.05
+  2    832.38 129138.40 123973.56
+BucketCount: 800
+WriteAmplification: 7.6104
+
+2019/09/20-17:00:44  ... thread 1: (1000000,19000000) ops and (9024.1,8656.8) ops/second in (110.814558,2194.798489) seconds
+2019/09/20-17:00:48  ... thread 3: (1000000,19000000) ops and (9063.3,8643.0) ops/second in (110.335654,2198.311324) seconds
+2019/09/20-17:00:58  ... thread 2: (1000000,19000000) ops and (8883.9,8600.9) ops/second in (112.563377,2209.083020) seconds
+2019/09/20-17:02:30  ... thread 1: (1000000,20000000) ops and (9407.5,8691.5) ops/second in (106.297919,2301.096408) seconds
+2019/09/20-17:02:32  ... thread 3: (1000000,20000000) ops and (9561.1,8684.7) ops/second in (104.590713,2302.902037) seconds
+2019/09/20-17:02:46  ... thread 2: (1000000,20000000) ops and (9261.0,8631.6) ops/second in (107.979727,2317.062747) seconds
+2019/09/20-17:04:15  ... thread 1: (1000000,21000000) ops and (9569.1,8729.6) ops/second in (104.503147,2405.599555) seconds
+2019/09/20-17:04:17  ... thread 3: (1000000,21000000) ops and (9583.3,8723.6) ops/second in (104.348339,2407.250376) seconds
+2019/09/20-17:04:35  ... thread 2: (1000000,21000000) ops and (9229.0,8658.3) ops/second in (108.354668,2425.417415) seconds
+2019/09/20-17:06:00  ... thread 1: (1000000,22000000) ops and (9562.8,8764.3) ops/second in (104.572263,2510.171818) seconds
+2019/09/20-17:06:01  ... thread 3: (1000000,22000000) ops and (9552.6,8758.2) ops/second in (104.683274,2511.933650) seconds
+2019/09/20-17:06:23  ... thread 2: (1000000,22000000) ops and (9233.4,8682.9) ops/second in (108.302663,2533.720078) seconds
+2019/09/20-17:07:45  ... thread 1: (1000000,23000000) ops and (9498.3,8793.9) ops/second in (105.282120,2615.453938) seconds
+2019/09/20-17:07:45  ... thread 3: (1000000,23000000) ops and (9625.4,8792.6) ops/second in (103.891802,2615.825452) seconds
+2019/09/20-17:08:07  ... thread 2: (1000000,23000000) ops and (9633.3,8720.3) ops/second in (103.806467,2637.526545) seconds
+2019/09/20-17:09:29  ... thread 3: (1000000,24000000) ops and (9646.7,8825.2) ops/second in (103.661989,2719.487441) seconds
+2019/09/20-17:09:30  ... thread 1: (1000000,24000000) ops and (9542.8,8822.7) ops/second in (104.790957,2720.244895) seconds
+2019/09/20-17:09:51  ... thread 2: (1000000,24000000) ops and (9628.7,8754.7) ops/second in (103.855723,2741.382268) seconds
+2019/09/20-17:11:16  ... thread 3: (1000000,25000000) ops and (9340.7,8844.7) ops/second in (107.057785,2826.545226) seconds
+2019/09/20-17:11:26  ... thread 1: (1000000,25000000) ops and (8617.5,8814.3) ops/second in (116.043316,2836.288211) seconds
+2019/09/20-17:11:38  ... thread 2: (1000000,25000000) ops and (9335.0,8776.5) ops/second in (107.123997,2848.506265) seconds
+2019/09/20-17:13:01  ... thread 3: (1000000,26000000) ops and (9475.7,8867.4) ops/second in (105.532880,2932.078106) seconds
+2019/09/20-17:13:16  ... thread 1: (1000000,26000000) ops and (9037.1,8822.7) ops/second in (110.654690,2946.942901) seconds
+2019/09/20-17:13:24  ... thread 2: (1000000,26000000) ops and (9434.6,8800.1) ops/second in (105.993026,2954.499291) seconds
+2019/09/20-17:14:45  ... thread 3: (1000000,27000000) ops and (9664.2,8894.6) ops/second in (103.474373,3035.552479) seconds
+2019/09/20-17:15:00  ... thread 1: (1000000,27000000) ops and (9668.3,8851.4) ops/second in (103.431320,3050.374221) seconds
+2019/09/20-17:15:08  ... thread 2: (1000000,27000000) ops and (9634.1,8828.4) ops/second in (103.798458,3058.297749) seconds
+2019/09/20-17:16:29  ... thread 3: (1000000,28000000) ops and (9590.2,8917.7) ops/second in (104.272767,3139.825246) seconds
+2019/09/20-17:16:44  ... thread 1: (1000000,28000000) ops and (9579.9,8875.5) ops/second in (104.385591,3154.759812) seconds
+2019/09/20-17:16:55  ... thread 2: (1000000,28000000) ops and (9293.8,8844.3) ops/second in (107.598843,3165.896592) seconds
+2019/09/20-17:18:13  ... thread 3: (1000000,29000000) ops and (9628.1,8940.4) ops/second in (103.863068,3243.688314) seconds
+2019/09/20-17:18:28  ... thread 1: (1000000,29000000) ops and (9637.0,8899.7) ops/second in (103.767191,3258.527003) seconds
+2019/09/20-17:18:41  ... thread 2: (1000000,29000000) ops and (9471.3,8864.5) ops/second in (105.582169,3271.478761) seconds
+2019/09/20-17:20:05  ... thread 3: (1000000,30000000) ops and (8945.2,8940.6) ops/second in (111.791422,3355.479736) seconds
+2019/09/20-17:20:14  ... thread 1: (1000000,30000000) ops and (9450.8,8917.1) ops/second in (105.811036,3364.338039) seconds
+2019/09/20-17:20:27  ... thread 2: (1000000,30000000) ops and (9429.8,8882.2) ops/second in (106.046620,3377.525381) seconds
+2019/09/20-17:21:49  ... thread 3: (1000000,31000000) ops and (9592.3,8960.2) ops/second in (104.249996,3459.729732) seconds
+2019/09/20-17:21:57  ... thread 1: (1000000,31000000) ops and (9659.3,8939.2) ops/second in (103.527120,3467.865159) seconds
+2019/09/20-17:22:10  ... thread 2: (1000000,31000000) ops and (9691.7,8906.2) ops/second in (103.180937,3480.706318) seconds
+2019/09/20-17:23:33  ... thread 3: (1000000,32000000) ops and (9665.4,8980.7) ops/second in (103.461769,3563.191501) seconds
+2019/09/20-17:23:41  ... thread 1: (1000000,32000000) ops and (9659.1,8960.1) ops/second in (103.528875,3571.394034) seconds
+2019/09/20-17:23:55  ... thread 2: (1000000,32000000) ops and (9520.5,8924.2) ops/second in (105.036615,3585.742933) seconds
+2019/09/20-17:25:18  ... thread 3: (1000000,33000000) ops and (9461.3,8994.6) ops/second in (105.693752,3668.885253) seconds
+2019/09/20-17:25:25  ... thread 1: (1000000,33000000) ops and (9638.6,8979.2) ops/second in (103.749369,3675.143403) seconds
+2019/09/20-17:25:39  ... thread 2: (1000000,33000000) ops and (9632.4,8944.2) ops/second in (103.815845,3689.558778) seconds
+2019/09/20-17:27:04  ... thread 3: (1000000,34000000) ops and (9459.0,9007.6) ops/second in (105.719571,3774.604824) seconds
+2019/09/20-17:27:08  ... thread 1: (1000000,34000000) ops and (9628.0,8997.1) ops/second in (103.863971,3779.007374) seconds
+2019/09/20-17:27:23  ... thread 2: (1000000,34000000) ops and (9633.4,8963.0) ops/second in (103.805978,3793.364756) seconds
+2019/09/20-17:28:50  ... thread 3: (1000000,35000000) ops and (9408.6,9018.5) ops/second in (106.286066,3880.890890) seconds
+2019/09/20-17:28:53  ... thread 1: (1000000,35000000) ops and (9569.4,9012.5) ops/second in (104.500163,3883.507537) seconds
+2019/09/20-17:29:09  ... thread 2: (1000000,35000000) ops and (9385.8,8974.6) ops/second in (106.543449,3899.908205) seconds
+2019/09/20-17:30:35  ... thread 3: (1000000,36000000) ops and (9576.8,9033.2) ops/second in (104.419065,3985.309955) seconds
+2019/09/20-17:30:37  ... thread 1: (1000000,36000000) ops and (9641.8,9028.8) ops/second in (103.715476,3987.223013) seconds
+2019/09/20-17:30:54  ... thread 2: (1000000,36000000) ops and (9520.2,8988.9) ops/second in (105.039862,4004.948067) seconds
+2019/09/20-17:32:23  ... thread 3: (1000000,37000000) ops and (9245.0,9038.8) ops/second in (108.166314,4093.476269) seconds
+2019/09/20-17:32:24  ... thread 1: (1000000,37000000) ops and (9286.4,9035.6) ops/second in (107.684366,4094.907379) seconds
+2019/09/20-17:32:45  ... thread 2: (1000000,37000000) ops and (9040.1,8990.3) ops/second in (110.618613,4115.566680) seconds
+2019/09/20-17:34:08  ... thread 3: (1000000,38000000) ops and (9544.0,9051.4) ops/second in (104.777400,4198.253669) seconds
+2019/09/20-17:34:09  ... thread 1: (1000000,38000000) ops and (9509.7,9047.5) ops/second in (105.156332,4200.063711) seconds
+2019/09/20-17:34:31  ... thread 2: (1000000,38000000) ops and (9444.6,9001.7) ops/second in (105.880489,4221.447169) seconds
+2019/09/20-17:35:53  ... thread 3: (1000000,39000000) ops and (9502.9,9062.4) ops/second in (105.231025,4303.484694) seconds
+2019/09/20-17:35:54  ... thread 1: (1000000,39000000) ops and (9597.9,9060.8) ops/second in (104.189635,4304.253346) seconds
+2019/09/20-17:36:16  ... thread 2: (1000000,39000000) ops and (9481.6,9013.4) ops/second in (105.467339,4326.914508) seconds
+2019/09/20-17:37:36  ... thread 3: (1000000,40000000) ops and (9706.6,9077.5) ops/second in (103.023162,4406.507856) seconds
+2019/09/20-17:37:37  ... thread 1: (1000000,40000000) ops and (9714.8,9076.1) ops/second in (102.935986,4407.189332) seconds
+2019/09/20-17:38:00  ... thread 2: (1000000,40000000) ops and (9653.8,9028.3) ops/second in (103.586353,4430.500861) seconds
+2019/09/20-17:39:21  ... thread 3: (1000000,41000000) ops and (9510.9,9087.6) ops/second in (105.141981,4511.649837) seconds
+2019/09/20-17:39:22  ... thread 1: (1000000,41000000) ops and (9475.0,9085.4) ops/second in (105.540887,4512.730219) seconds
+2019/09/20-17:39:46  ... thread 2: (1000000,41000000) ops and (9383.9,9036.7) ops/second in (106.565159,4537.066020) seconds
+2019/09/20-17:41:06  ... thread 3: (1000000,42000000) ops and (9495.4,9096.9) ops/second in (105.314001,4616.963838) seconds
+2019/09/20-17:41:07  ... thread 1: (1000000,42000000) ops and (9511.2,9095.1) ops/second in (105.139561,4617.869780) seconds
+2019/09/20-17:41:34  ... thread 2: (1000000,42000000) ops and (9296.6,9042.7) ops/second in (107.566069,4644.632089) seconds
+2019/09/20-17:42:51  ... thread 3: (1000000,43000000) ops and (9558.9,9107.1) ops/second in (104.614990,4721.578828) seconds
+2019/09/20-17:42:52  ... thread 1: (1000000,43000000) ops and (9570.4,9105.6) ops/second in (104.488526,4722.358306) seconds
+2019/09/20-17:43:27  ... thread 2: (1000000,43000000) ops and (8883.5,9038.9) ops/second in (112.568846,4757.200935) seconds
+2019/09/20-17:44:35  ... thread 3: (1000000,44000000) ops and (9584.8,9117.4) ops/second in (104.332020,4825.910848) seconds
+2019/09/20-17:44:36  ... thread 1: (1000000,44000000) ops and (9586.4,9116.0) ops/second in (104.313905,4826.672211) seconds
+2019/09/20-17:45:10  ... thread 2: (1000000,44000000) ops and (9682.3,9052.6) ops/second in (103.281657,4860.482592) seconds
+2019/09/20-17:46:19  ... thread 1: (1000000,45000000) ops and (9676.5,9127.8) ops/second in (103.342780,4930.014991) seconds
+2019/09/20-17:46:20  ... thread 3: (1000000,45000000) ops and (9552.7,9126.7) ops/second in (104.682084,4930.592932) seconds
+2019/09/20-17:46:54  ... thread 2: (1000000,45000000) ops and (9611.1,9064.3) ops/second in (104.046511,4964.529103) seconds
+2019/09/20-17:48:04  ... thread 1: (1000000,46000000) ops and (9568.7,9136.9) ops/second in (104.507045,5034.522036) seconds
+2019/09/20-17:48:06  ... thread 3: (1000000,46000000) ops and (9468.4,9133.9) ops/second in (105.614157,5036.207089) seconds
+2019/09/20-17:48:37  ... thread 2: (1000000,46000000) ops and (9658.3,9076.4) ops/second in (103.537421,5068.066524) seconds
+2019/09/20-17:49:47  ... thread 1: (1000000,47000000) ops and (9689.2,9148.0) ops/second in (103.207240,5137.729276) seconds
+2019/09/20-17:49:49  ... thread 3: (1000000,47000000) ops and (9673.2,9144.7) ops/second in (103.378404,5139.585493) seconds
+2019/09/20-17:50:21  ... thread 2: (1000000,47000000) ops and (9666.2,9088.2) ops/second in (103.453031,5171.519555) seconds
+2019/09/20-17:51:32  ... thread 1: (1000000,48000000) ops and (9524.7,9155.6) ops/second in (104.990278,5242.719554) seconds
+2019/09/20-17:51:39  ... thread 3: (1000000,48000000) ops and (9101.2,9143.8) ops/second in (109.875877,5249.461370) seconds
+2019/09/20-17:52:06  ... thread 2: (1000000,48000000) ops and (9554.4,9097.5) ops/second in (104.663888,5276.183443) seconds
+2019/09/20-17:53:17  ... thread 1: (1000000,49000000) ops and (9511.8,9162.6) ops/second in (105.132779,5347.852333) seconds
+2019/09/20-17:53:29  ... thread 3: (1000000,49000000) ops and (9112.0,9143.1) ops/second in (109.745983,5359.207353) seconds
+2019/09/20-17:53:52  ... thread 2: (1000000,49000000) ops and (9439.1,9104.2) ops/second in (105.941825,5382.125268) seconds
+2019/09/20-17:55:01  ... thread 1: (1000000,50000000) ops and (9649.6,9171.8) ops/second in (103.631719,5451.484052) seconds
+thread 1 : (49999622 of 50000000 found)
+2019/09/20-17:55:13  ... thread 3: (1000000,50000000) ops and (9596.3,9151.8) ops/second in (104.207199,5463.414552) seconds
+thread 3 : (49999635 of 50000000 found)
+2019/09/20-17:55:35  ... thread 2: (1000000,50000000) ops and (9641.7,9114.4) ops/second in (103.715926,5485.841194) seconds
+thread 2 : (49999614 of 50000000 found)
+readuniwhilewriting :      36.572 micros/op 27343 ops/sec; (49999622 of 50000000 found)
+Microseconds per op:
+Count: 150000000 Average: 109.3383  StdDev: 27.11
+Min: 0  Median: 113.3589  Max: 405229
+Percentiles: P50: 113.36 P75: 157.68 P99: 491.51 P99.9: 829.25 P99.99: 9955.05
+------------------------------------------------------
+[       0,       1 ]    77621   0.052%   0.052% 
+(       1,       2 ]   218056   0.145%   0.197% 
+(       2,       3 ]    69344   0.046%   0.243% 
+(       3,       4 ]    48138   0.032%   0.275% 
+(       4,       6 ]   675531   0.450%   0.726% 
+(       6,      10 ]  6271702   4.181%   4.907% #
+(      10,      15 ] 18264817  12.177%  17.083% ##
+(      15,      22 ] 27297290  18.198%  35.282% ####
+(      22,      34 ] 11372243   7.581%  42.863% ##
+(      34,      51 ]  2423326   1.616%  44.479% 
+(      51,      76 ]   353887   0.236%  44.715% 
+(      76,     110 ]  5085880   3.391%  48.105% #
+(     110,     170 ] 50769846  33.847%  81.952% #######
+(     170,     250 ] 15157885  10.105%  92.057% ##
+(     250,     380 ]  8946272   5.964%  98.021% #
+(     380,     580 ]  2633266   1.756%  99.777% 
+(     580,     870 ]   215124   0.143%  99.920% 
+(     870,    1300 ]    34339   0.023%  99.943% 
+(    1300,    1900 ]    18998   0.013%  99.956% 
+(    1900,    2900 ]    26201   0.017%  99.973% 
+(    2900,    4400 ]    15014   0.010%  99.983% 
+(    4400,    6600 ]     6464   0.004%  99.987% 
+(    6600,    9900 ]     3725   0.002%  99.990% 
+(    9900,   14000 ]     2309   0.002%  99.992% 
+(   14000,   22000 ]     8743   0.006%  99.997% 
+(   22000,   33000 ]     3170   0.002%  99.999% 
+(   33000,   50000 ]      472   0.000% 100.000% 
+(   50000,   75000 ]       97   0.000% 100.000% 
+(   75000,  110000 ]      182   0.000% 100.000% 
+(  110000,  170000 ]       54   0.000% 100.000% 
+(  250000,  380000 ]        3   0.000% 100.000% 
+(  380000,  570000 ]        1   0.000% 100.000% 
+
+
+                               Compactions
+Level Time(sec) Read(MB) Write(MB)
+--------------------------------------------------
+  0    163.93     0.00  21826.77
+  1    122.31 20716.11  20388.62
+  2    835.23 129659.74 124472.88
+BucketCount: 800
+WriteAmplification: 7.6369
+
+seq# 1210000001, log# 4, min log#0, file# 94068

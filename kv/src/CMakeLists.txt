@@ -1,0 +1,7 @@
+add_subdirectory(db)
+add_subdirectory(table)
+add_subdirectory(util)
+add_subdirectory(port)
+add_subdirectory(env)
+add_subdirectory(monitoring)
+add_subdirectory(memtable)

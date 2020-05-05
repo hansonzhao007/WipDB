@@ -9,6 +9,7 @@ done &
 
 rm -rf /mnt/nvm/*
 rm /mnt/ssd/*.log
+
 echo fb0-=0-= | sudo -S fstrim /mnt/ssd
 echo fb0-=0-= | sudo -S fstrim /mnt/nvm
 echo fb0-=0-= | sudo -S bash -c 'echo 1 > /proc/sys/vm/drop_caches'

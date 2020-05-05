@@ -120,6 +120,18 @@ private:
 };
 
 
+class TraceExponentialReverse: public Trace {
+public:
+  #define FNV_OFFSET_BASIS_64 ((UINT64_C(0xCBF29CE484222325)))
+  #define FNV_PRIME_64 ((UINT64_C(1099511628211)))
+  explicit TraceExponentialReverse(int seed, const double percentile = 50, double range = kRANDOM_RANGE);
+  ~TraceExponentialReverse()  {}
+  uint64_t Next() override;
+private:
+  uint64_t range_;
+};
+
+
 class TraceNormal: public Trace {
 public:
   explicit TraceNormal(int seed, uint64_t minimum = 0, uint64_t maximum = kRANDOM_RANGE);

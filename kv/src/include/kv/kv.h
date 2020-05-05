@@ -74,6 +74,8 @@ public:
     }
 
     bool GetProperty(const Slice& property, std::string* value);
+    void GetBuckets(std::string* value);
+    void PrintBuckets();
 private:
     friend class KVInserter;
     friend class DBImpl;

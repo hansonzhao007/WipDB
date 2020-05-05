@@ -1423,7 +1423,7 @@ random_double(void)
     ReadOptions options;
     uint64_t found = 0;
     thread->trace = new TraceUniform(random() + 996);
-    for (uint64_t i = 0; i < FLAGS_ycsb_ops_num; i++) {
+    for (uint64_t i = 0; i < FLAGS_ycsb_ops_num && FLAGS_writes > 0; i++) {
       std::string value;
       char key[100];
       const uint64_t k = thread->trace->Next() % (uint64_t)(FLAGS_range);
@@ -1443,7 +1443,7 @@ random_double(void)
     ReadOptions options;
     uint64_t found = 0;
     thread->trace = new TraceExponential(random() + 996, 90, FLAGS_num);
-    for (uint64_t i = 0; i < FLAGS_ycsb_ops_num; i++) {
+    for (uint64_t i = 0; i < FLAGS_ycsb_ops_num && FLAGS_writes > 0; i++) {
       std::string value;
       char key[100];
       const uint64_t k = thread->trace->Next() % (uint64_t)(FLAGS_range);
@@ -1500,8 +1500,8 @@ random_double(void)
       // Special thread that keeps writing until other threads are done.
       g_env->SleepForMicroseconds(FLAGS_sleep * 1000000); // sleep for 900 s
       RandomGenerator gen;
-      int64_t write_num = FLAGS_writes; // 100Million, around 10G
-      while (write_num-- >= 0) {
+      thread->stats.Start();
+      while (FLAGS_writes-- >= 0) {
         {
           MutexLock l(&thread->shared->mu);
           if (thread->shared->num_done + 1 >= thread->shared->num_initialized) {
@@ -1523,7 +1523,7 @@ random_double(void)
           exit(1);
         }
       }
-
+      
       // Do not count any of the preceding work/delay in stats.
       thread->stats.Start();
     }
@@ -1536,8 +1536,8 @@ random_double(void)
       // Special thread that keeps writing until other threads are done.
       g_env->SleepForMicroseconds(FLAGS_sleep * 1000000); // sleep for 900 s
       RandomGenerator gen;
-      int64_t write_num = FLAGS_writes; // 100Million, around 10G
-      while (write_num-- >= 0) {
+      thread->stats.Start();
+      while (FLAGS_writes-- >= 0) {
         {
           MutexLock l(&thread->shared->mu);
           if (thread->shared->num_done + 1 >= thread->shared->num_initialized) {

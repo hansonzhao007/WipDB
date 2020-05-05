@@ -1081,29 +1081,30 @@ class PosixEnv : public Env {
       return PosixError(filename, errno);
     }
 
-    if (!mmap_limiter_.Acquire()) {
+    // if (!mmap_limiter_.Acquire()) 
+    {
       *result = new PosixRandomAccessFile(filename, fd, &fd_limiter_);
       return Status::OK();
     }
 
-    uint64_t file_size;
-    Status status = GetFileSize(filename, &file_size);
-    if (status.ok()) {
-      void* mmap_base = ::mmap(/*addr=*/nullptr, file_size, PROT_READ,
-                               MAP_SHARED, fd, 0);
-      if (mmap_base != MAP_FAILED) {
-        *result = new PosixMmapReadableFile(
-            filename, reinterpret_cast<char*>(mmap_base), file_size,
-            &mmap_limiter_);
-      } else {
-        status = PosixError(filename, errno);
-      }
-    }
-    ::close(fd);
-    if (!status.ok()) {
-      mmap_limiter_.Release();
-    }
-    return status;
+    // uint64_t file_size;
+    // Status status = GetFileSize(filename, &file_size);
+    // if (status.ok()) {
+    //   void* mmap_base = ::mmap(/*addr=*/nullptr, file_size, PROT_READ,
+    //                            MAP_SHARED, fd, 0);
+    //   if (mmap_base != MAP_FAILED) {
+    //     *result = new PosixMmapReadableFile(
+    //         filename, reinterpret_cast<char*>(mmap_base), file_size,
+    //         &mmap_limiter_);
+    //   } else {
+    //     status = PosixError(filename, errno);
+    //   }
+    // }
+    // ::close(fd);
+    // if (!status.ok()) {
+    //   mmap_limiter_.Release();
+    // }
+    // return status;
   }
 
   int GetFileId(const std::string& filename) {
@@ -1377,7 +1378,7 @@ class PosixEnv : public Env {
   
   virtual void Schedule(void (*function)(void* arg1), void* arg,
                         Priority pri = LOW, void* tag = nullptr,
-                        void (*unschedFunction)(void* arg) = nullptr, int id = -1, bool first = false) override;
+                        void (*unschedFunction)(void* arg) = nullptr, int id = -1, int score = 0) override;
 
   virtual int UnSchedule(void* arg, Priority pri) override;
   virtual int UnSchedule(void* arg, Priority pri, int id) override;
@@ -1638,9 +1639,9 @@ void PosixEnv::BackgroundThreadMain() {
 }
 
 void PosixEnv::Schedule(void (*function)(void* arg1), void* arg, Priority pri,
-                        void* tag, void (*unschedFunction)(void* arg), int id, bool first) {
+                        void* tag, void (*unschedFunction)(void* arg), int id, int score) {
   assert(pri >= Priority::BOTTOM && pri <= Priority::HIGH);
-  thread_pools_[pri].Schedule(function, arg, tag, unschedFunction, id, first);
+  thread_pools_[pri].Schedule(function, arg, tag, unschedFunction, id, score);
 }
 
 int PosixEnv::UnSchedule(void* arg, Priority pri) {

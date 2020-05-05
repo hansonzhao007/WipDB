@@ -340,7 +340,8 @@ void KV::Merge(Bucket* bucket /* the bucket that is splitted*/) {
         // add bottom table
         split_bucket->split_buckets[i]->db->AddFileToLastLevel(&split_bucket->bottom_tables[i]);
 
-        // delete the double
+        // delete the old bucket link
+        split_bucket->split_buckets[i]->bucket_old = nullptr;
         split_bucket->split_buckets[i]->Unref();
         split_bucket->Unref();
     }
@@ -350,6 +351,21 @@ void KV::Merge(Bucket* bucket /* the bucket that is splitted*/) {
 
 }
 
+void KV::GetBuckets(std::string* value) {
+    value->clear();
+    char buf[200];
+    snprintf(buf, sizeof(buf), "BucketName, Size\n");
+    value->append(buf);
+    for (auto& b : versions_->current()->buckets_) {
+        snprintf(buf, sizeof(buf), "%s, %lld\n", b->db_name.c_str(), (long long)b->db->TotalSize());
+        value->append(buf);
+    }
+}
+void KV::PrintBuckets() {
+    std::string value;
+    GetBuckets(&value);
+    fprintf(stdout, "\n%s\n", value.c_str());
+}
 bool KV::GetProperty(const Slice& property, std::string* value) {
     value->clear();
     Slice in = property;
@@ -386,12 +402,29 @@ bool KV::GetProperty(const Slice& property, std::string* value) {
 
         // snprintf(buf, sizeof(buf), "BucketName, Size\n");
         // value->append(buf);
-
+        
         // for (auto& b : versions_->current()->buckets_) {
         //     snprintf(buf, sizeof(buf), "%s, %lld\n", b->db_name.c_str(), (long long)b->db->TotalSize());
         //     value->append(buf);
         // }
-    
+
+        
+        int64_t total_size = 0;
+        versions_->current()->Ref();
+        Bucket* pre_bucket = nullptr;
+        for (auto& b : versions_->current()->buckets_) {
+            total_size += b->db->TotalSize();
+            if ((!pre_bucket && b->bucket_old != nullptr) || 
+                (pre_bucket && 
+                 b->bucket_old != nullptr &&
+                 pre_bucket->bucket_old != b->bucket_old )) {
+                 total_size += b->bucket_old->db->TotalSize();
+            }
+            pre_bucket = b;
+        }
+        versions_->current()->Unref();
+        snprintf(buf, sizeof(buf), "TotalSize(MB): %.2f\n", total_size / 1024.0 / 1024.0);
+        value->append(buf);
         return true;
     } 
 }

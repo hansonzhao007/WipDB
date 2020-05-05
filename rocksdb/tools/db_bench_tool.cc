@@ -3848,26 +3848,6 @@ void VerifyDBFromDB(std::string& truth_db_name) {
   }
 
 
-  uint64_t
-random_uint64(void)
-{
-  // 62 bit random value;
-  const uint64_t rand64 = (((uint64_t)random()) << 31) + ((uint64_t)random());
-  return rand64;
-}
-
-#define RAND64_MAX   ((((uint64_t)RAND_MAX) << 31) + ((uint64_t)RAND_MAX))
-#define RAND64_MAX_D ((double)(RAND64_MAX))
-
-  double
-random_double(void)
-{
-  // random between 0.0 - 1.0
-  const double r = (double)random_uint64();
-  const double rd = r / RAND64_MAX_D;
-  return rd;
-}
-
   bool YCSBOperation(DBWithColumnFamilies* db_with_cfh, const YCSB_Op& operation, const Slice& ivalue, std::string* ovalue) {
     static ReadOptions roption(FLAGS_verify_checksum, true);
     static WriteOptions woption;
@@ -4796,7 +4776,7 @@ random_double(void)
     Random64 rnd(random() + 996);
     reads_ = FLAGS_ycsb_ops_num;
     Duration duration(FLAGS_duration, reads_);
-    while (!duration.Done(1)) {
+    while (!duration.Done(1) && FLAGS_writes > 0) {
       DBWithColumnFamilies* db_with_cfh = SelectDBWithCfh(thread);
       // We use same key_rand as seed for key and column family so that we can
       // deterministically find the cfh corresponding to a particular key, as it
@@ -4856,7 +4836,7 @@ random_double(void)
     Random64 rnd(random() + 996, true, 90, FLAGS_num);
     reads_ = FLAGS_ycsb_ops_num;
     Duration duration(FLAGS_duration, reads_);
-    while (!duration.Done(1)) {
+    while (!duration.Done(1) && FLAGS_writes > 0) {
       DBWithColumnFamilies* db_with_cfh = SelectDBWithCfh(thread);
       // We use same key_rand as seed for key and column family so that we can
       // deterministically find the cfh corresponding to a particular key, as it
@@ -5411,8 +5391,9 @@ random_double(void)
     Slice key = AllocateKey(&key_guard);
     uint32_t written = 0;
     bool hint_printed = false;
-    int64_t write_num = FLAGS_writes; // 100Million, around 10G
-    while (write_num-- >= 0) {
+    thread->stats.Start(thread->tid);
+    // int64_t write_num = FLAGS_writes; // 100Million, around 10G
+    while (FLAGS_writes-- >= 0) {
       DB* db = SelectDB(thread);
       {
         MutexLock l(&thread->shared->mu);

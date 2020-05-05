@@ -40,6 +40,30 @@ int ShuffleSeq(int i) {
     return sequence_shuffle.Next() % i;
 }
 
+
+  uint64_t
+random_uint64(void)
+{
+  // 62 bit random value;
+  const uint64_t rand64 = (((uint64_t)random()) << 31) + ((uint64_t)random());
+  return rand64;
+}
+
+#define RAND64_MAX   ((((uint64_t)RAND_MAX) << 31) + ((uint64_t)RAND_MAX))
+#define RAND64_MAX_D ((double)(RAND64_MAX))
+
+  double
+random_double(void)
+{
+  // random between 0.0 - 1.0
+  const double r = (double)random_uint64();
+  const double rd = r / RAND64_MAX_D;
+  return rd;
+}
+
+
+
+
 void RandomSequence(uint64_t num, std::vector<uint64_t>& sequence){
     sequence.resize(num);
     for (uint64_t i = 0; i < num; ++i) {
@@ -63,6 +87,23 @@ uint64_t TraceUniform::Next() {
     const uint64_t off = (uint64_t)(RandomDouble() * gi_->gen.uniform.interval);
     return gi_->gen.uniform.min + off;
 }
+
+
+
+TraceRandom::TraceRandom(uint64_t minimum, uint64_t maximum): Trace(0){
+    gi_ = new GenInfo();
+    gi_->gen.uniform.min = minimum;
+    gi_->gen.uniform.max = maximum;
+    gi_->gen.uniform.interval = (double)(maximum - minimum);
+    gi_->type = GEN_UNIFORM;
+}
+
+uint64_t TraceRandom::Next() {
+    const uint64_t off = (uint64_t)(random_double() * gi_->gen.uniform.interval);
+    return gi_->gen.uniform.min + off;
+}
+
+
 
 // zipfian
 TraceZipfian::TraceZipfian(int seed, uint64_t minimum, uint64_t maximum):

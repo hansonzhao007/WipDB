@@ -306,7 +306,7 @@ class Env {
   // registered at the time of Schedule is invoked with arg as a parameter.
   virtual void Schedule(void (*function)(void* arg), void* arg,
                         Priority pri = LOW, void* tag = nullptr,
-                        void (*unschedFunction)(void* arg) = nullptr, int id = -1, bool first = false) = 0;
+                        void (*unschedFunction)(void* arg) = nullptr, int id = -1, int score = 0) = 0;
 
   // Arrange to remove jobs for given arg from the queue_ if they are not
   // already scheduled. Caller is expected to have exclusive lock on arg.
@@ -781,8 +781,8 @@ class  EnvWrapper : public Env {
 
 
   void Schedule(void (*f)(void* arg), void* a, Priority pri,
-                void* tag = nullptr, void (*u)(void* arg) = nullptr, int id = -1, bool first = false) override {
-    return target_->Schedule(f, a, pri, tag, u, id, first);
+                void* tag = nullptr, void (*u)(void* arg) = nullptr, int id = -1, int score = 0) override {
+    return target_->Schedule(f, a, pri, tag, u, id, score);
   }
 
   int UnSchedule(void* tag, Priority pri) override {

@@ -100,7 +100,7 @@ DEFINE_double(compression_ratio, 0.5,   "Arrange to generate values that shrink 
 DEFINE_bool(histogram,        false,    "Print histogram of operation timings");
 DEFINE_bool(print_wa,         false,    "Print write amplification every stats interval");
 DEFINE_int64(write_buffer_size, 2097152,"Number of bytes to buffer in all memtables before compacting");
-DEFINE_int64(max_file_size,   256 << 20," Number of bytes written to each file");
+DEFINE_int64(max_file_size,   1 << 30," Number of bytes written to each file");
 DEFINE_int32(block_size,      4096,     "Approximate size of user data packed per block before compression.");
 DEFINE_int64(cache_size,      8 << 20,  "Number of bytes to use as a cache of uncompressed data,Negative means use default settings");
 DEFINE_int32(open_files,      0,        "Maximum number of files to keep open at the same time, (use default if == 0)");
@@ -128,13 +128,55 @@ DEFINE_bool(bg_cancel,        false,    "allow bg compaction to be canceled");
 DEFINE_int32(rwdelay,         10,       "delay between each write in us");
 DEFINE_int32(sleep,           100,      "sleep for write in readwhilewriting2");
 DEFINE_int64(report_interval, 20,       "report speed time interval in second");
+DEFINE_bool(filllarge,        false,    "if we want to test 30 billion insertion");
 
 static kv::YCSBLoadType FLAGS_ycsb_type = kv::kYCSB_A; // YCSB workload type
 static kv::Env* FLAGS_env = kv::Env::Default();
 static kv::Logger* io_log = nullptr;
 static std::vector<uint64_t> ycsb_insertion_sequence; // used to store ycsb trace
 
+
+
+  uint64_t
+random_uint64(void)
+{
+  // 62 bit random value;
+  const uint64_t rand64 = (((uint64_t)random()) << 31) + ((uint64_t)random());
+  return rand64;
+}
+
+#define RAND64_MAX   ((((uint64_t)RAND_MAX) << 31) + ((uint64_t)RAND_MAX))
+#define RAND64_MAX_D ((double)(RAND64_MAX))
+
+  double
+random_double(void)
+{
+  // random between 0.0 - 1.0
+  const double r = (double)random_uint64();
+  const double rd = r / RAND64_MAX_D;
+  return rd;
+}
+
+
+
 namespace kv {
+
+
+class TraceRandom: public Trace {
+public:
+  explicit TraceRandom(uint64_t minimum = 0, uint64_t maximum = kRANDOM_RANGE): Trace(0){
+    gi_ = new GenInfo();
+    gi_->gen.uniform.min = minimum;
+    gi_->gen.uniform.max = maximum;
+    gi_->gen.uniform.interval = (double)(maximum - minimum);
+    gi_->type = GEN_UNIFORM;
+  }
+  ~TraceRandom() {}
+  uint64_t Next() override {
+    const uint64_t off = (uint64_t)(random_double() * gi_->gen.uniform.interval);
+    return gi_->gen.uniform.min + off;
+  }
+};
 
 namespace {
 
@@ -411,6 +453,7 @@ struct ThreadState {
   SharedState* shared;
   Trace* trace;
   Trace* trace_exp;
+  Trace* trace_normal;
   RandomGenerator gen;
   ThreadState(int index)
       : tid(index),
@@ -419,6 +462,7 @@ struct ThreadState {
         // printf("Random seed: %d\n", seed);
         trace = new TraceUniform(1000 + index * 345);
         trace_exp = new TraceExponential(1000 + index * 345, 50, FLAGS_num);
+        trace_normal = new TraceNormal(1000 + index * 345);
   }
 };
 
@@ -631,6 +675,9 @@ class Benchmark {
       } else if (name == Slice("fillrandom")) {
         fresh_db = true;
         method = &Benchmark::WriteRandom;
+      } else if (name == Slice("fillrandomlarge")) {
+        fresh_db = true;
+        method = &Benchmark::WriteRandomLarge;
       } else if (name == Slice("fillexp")) {
         fresh_db = true;
         method = &Benchmark::WriteExp;
@@ -643,7 +690,13 @@ class Benchmark {
         method = &Benchmark::WriteWithDistributionChange;
       } else if (name == Slice("fillrandom3")) {
         fresh_db = true;
+        method = &Benchmark::WriteWithDistributionChange3;
+      }  else if (name == Slice("fillrandom4")) {
+        fresh_db = true;
         method = &Benchmark::WriteStress;
+      } else if (name == Slice("fillVarySize")) {
+        fresh_db = true;
+        method = &Benchmark::FillWithVariableSize;
       } else if (name == Slice("overwrite")) {
         fresh_db = false;
         method = &Benchmark::WriteRandom;
@@ -949,6 +1002,14 @@ class Benchmark {
         Slice skey(key);
         pivots.push_back(skey.ToString());
     }
+    if (FLAGS_filllarge) {
+      pivots.clear();
+      char key[100];
+      snprintf(key, sizeof(key), "%016" PRIu64 "", kRANDOM_RANGE);
+      Slice skey(key);
+      pivots.push_back(skey.ToString());
+      printf("Bucket to Max Range. %s\n", key);
+    }
     
     Status s = KV::Open(options, FLAGS_db, pivots, &db_, FLAGS_hugepage);
 
@@ -1008,6 +1069,98 @@ class Benchmark {
     thread->stats.AddBytes(bytes);
   }
 
+
+  void WriteWithDistributionChange3(ThreadState* thread) {
+    if (num_ != FLAGS_num) {
+      char msg[100];
+      snprintf(msg, sizeof(msg), "(%" PRIu64 " ops)", num_);
+      thread->stats.AddMessage(msg);
+    }
+
+    RandomGenerator gen;
+    WriteBatch batch;
+    Status s;
+    Duration duration(0, num_);
+
+    int64_t bytes = 0;
+    uint64_t i = 0;
+    bool pBucket = false;
+    uint64_t printBucketInterval = 1000000000;
+    uint64_t nextPrintTime = printBucketInterval;
+    while (!duration.Done(entries_per_batch_)) {
+      batch.Clear();
+      for (uint64_t j = 0; j < entries_per_batch_; j++) {
+        uint64_t k = 0;
+        if (duration.Ops() >= nextPrintTime) {
+          // printBuckets every 1 Billion records
+          db_->PrintBuckets();
+          nextPrintTime += printBucketInterval;
+        }
+        if (duration.Ops() >= 5000000000) {
+          k = FLAGS_range - (thread->trace_exp->Next() % FLAGS_range); // reverse skew
+        }
+        else if (duration.Ops() >= 3000000000) {
+          k = thread->trace->Next() % FLAGS_range;
+        }
+        else {
+          k = thread->trace_exp->Next() % FLAGS_range;
+        }
+        char key[100];
+        snprintf(key, sizeof(key), "%016" PRIu64 "", k);
+        batch.Put(key, gen.Generate(value_size_));
+        bytes += value_size_ + strlen(key);
+        thread->stats.FinishedSingleOp(db_);
+      }
+      s = db_->Write(write_options_, &batch);
+      if (!s.ok()) {
+        fprintf(stderr, "put error: %s\n", s.ToString().c_str());
+        exit(1);
+      }
+      i+=entries_per_batch_;
+    }
+    db_->PrintBuckets();
+    thread->stats.AddBytes(bytes);
+  }
+
+  // value size vary from 10 to 200
+  void FillWithVariableSize(ThreadState* thread) {
+    if (num_ != FLAGS_num) {
+      char msg[100];
+      snprintf(msg, sizeof(msg), "(%" PRIu64 " ops)", num_);
+      thread->stats.AddMessage(msg);
+    }
+
+    RandomGenerator gen;
+    WriteBatch batch;
+    Status s;
+    Duration duration(0, num_);
+
+    int64_t bytes = 0;
+    uint64_t i = 0;
+    bool pBucket = false;
+    while (!duration.Done(entries_per_batch_)) {
+      batch.Clear();
+      for (uint64_t j = 0; j < entries_per_batch_; j++) {
+        uint64_t k = 0;
+        k = thread->trace->Next() % FLAGS_range;
+        char key[100];
+        snprintf(key, sizeof(key), "%016" PRIu64 "", k);
+        int32_t valueSize = random() % 190 + 10;
+        batch.Put(key, gen.Generate(valueSize));
+        bytes += valueSize + strlen(key);
+        thread->stats.FinishedSingleOp(db_);
+      }
+      s = db_->Write(write_options_, &batch);
+      if (!s.ok()) {
+        fprintf(stderr, "put error: %s\n", s.ToString().c_str());
+        exit(1);
+      }
+      i+=entries_per_batch_;
+    }
+    db_->PrintBuckets();
+    thread->stats.AddBytes(bytes);
+  }
+
   void WriteStress(ThreadState* thread) {
     if (num_ != FLAGS_num) {
       char msg[100];
@@ -1049,6 +1202,12 @@ class Benchmark {
   void WriteRandom(ThreadState* thread) {
     DoWrite(thread, false);
   }
+
+
+  void WriteRandomLarge(ThreadState* thread) {
+    DoWriteLarge(thread, false);
+  }
+
   void WriteExp(ThreadState* thread) {
     thread->trace = new TraceExponential(random(), 50);
     DoWrite(thread, false);
@@ -1059,26 +1218,6 @@ class Benchmark {
   }
 
 
-
-  uint64_t
-random_uint64(void)
-{
-  // 62 bit random value;
-  const uint64_t rand64 = (((uint64_t)random()) << 31) + ((uint64_t)random());
-  return rand64;
-}
-
-#define RAND64_MAX   ((((uint64_t)RAND_MAX) << 31) + ((uint64_t)RAND_MAX))
-#define RAND64_MAX_D ((double)(RAND64_MAX))
-
-  double
-random_double(void)
-{
-  // random between 0.0 - 1.0
-  const double r = (double)random_uint64();
-  const double rd = r / RAND64_MAX_D;
-  return rd;
-}
 
   bool YCSBOperation(const YCSB_Op& operation, const Slice& ivalue, std::string* ovalue) {
     static ReadOptions roption;
@@ -1340,6 +1479,44 @@ random_double(void)
     thread->stats.AddMessage(msg);
   }
 
+
+  void DoWriteLarge(ThreadState* thread, bool seq) {
+    // change trace seed when reach 8B keys
+    const int test_duration = !seq ? FLAGS_duration : 0;
+    if (num_ != FLAGS_num) {
+      char msg[100];
+      snprintf(msg, sizeof(msg), "(%" PRIu64 " ops)", num_);
+      thread->stats.AddMessage(msg);
+    }
+
+    RandomGenerator gen;
+    WriteBatch batch;
+    Status s;
+    Duration duration(test_duration, num_);
+
+    int64_t bytes = 0;
+    uint64_t i = 0;
+    thread->trace = new TraceRandom(); // using system random function generate random number
+    while (!duration.Done(entries_per_batch_)) {
+      batch.Clear();
+      for (uint64_t j = 0; j < entries_per_batch_; j++) {
+        const uint64_t k = seq ? (i+j): thread->trace->Next();
+        char key[100];
+        snprintf(key, sizeof(key), "%016" PRIu64 "", k);
+        batch.Put(key, gen.Generate(value_size_));
+        bytes += value_size_ + strlen(key);
+        thread->stats.FinishedSingleOp(db_);
+      }
+      s = db_->Write(write_options_, &batch);
+      if (!s.ok()) {
+        fprintf(stderr, "put error: %s\n", s.ToString().c_str());
+        exit(1);
+      }
+      i+=entries_per_batch_;
+    }
+    thread->stats.AddBytes(bytes);
+  }
+
   void DoWrite(ThreadState* thread, bool seq) {
     const int test_duration = !seq ? FLAGS_duration : 0;
     if (num_ != FLAGS_num) {
@@ -1409,7 +1586,8 @@ random_double(void)
     ReadOptions options;
     uint64_t found = 0;
     thread->trace = new TraceExponential(random() + 996, 90, FLAGS_num);
-    for (uint64_t i = 0; i < FLAGS_ycsb_ops_num; i++) {
+    // stop when operation end or write end
+    for (uint64_t i = 0; i < FLAGS_ycsb_ops_num && FLAGS_writes > 0; i++) {
       std::string value;
       char key[100];
       const uint64_t k = thread->trace->Next() % (uint64_t)(FLAGS_range);
@@ -1429,7 +1607,7 @@ random_double(void)
     ReadOptions options;
     uint64_t found = 0;
     thread->trace = new TraceUniform(random() + 996);
-    for (uint64_t i = 0; i < FLAGS_ycsb_ops_num; i++) {
+    for (uint64_t i = 0; i < FLAGS_ycsb_ops_num && FLAGS_writes > 0; i++) {
       std::string value;
       char key[100];
       const uint64_t k = thread->trace->Next() % (uint64_t)(FLAGS_range);
@@ -1642,8 +1820,8 @@ random_double(void)
       // Special thread that keeps writing until other threads are done.
       FLAGS_env->SleepForMicroseconds(FLAGS_sleep * 1000000); // sleep for 1800 s
       RandomGenerator gen;
-      int64_t write_num = FLAGS_writes;
-      while (write_num-- >= 0) {
+      thread->stats.Start();
+      while (FLAGS_writes-- >= 0) {
         {
           MutexLock l(&thread->shared->mu);
           if (thread->shared->num_done + 1 >= thread->shared->num_initialized) {
@@ -1676,8 +1854,8 @@ random_double(void)
       // Special thread that keeps writing until other threads are done.
       FLAGS_env->SleepForMicroseconds(FLAGS_sleep * 1000000); // sleep for 1800 s
       RandomGenerator gen;
-      int64_t write_num = FLAGS_writes; // 100Million, around 10G
-      while (write_num-- >= 0) {
+      thread->stats.Start();
+      while (FLAGS_writes-- >= 0) {
         {
           MutexLock l(&thread->shared->mu);
           if (thread->shared->num_done + 1 >= thread->shared->num_initialized) {

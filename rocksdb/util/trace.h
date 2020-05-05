@@ -53,7 +53,7 @@ public:
 
   uint64_t Random64() {
     // 62 bit random value;
-    const uint64_t rand64 = (((uint64_t)Random()) << 31) + ((uint64_t)Random());
+    const uint64_t rand64 = (((uint64_t)random()) << 31) + ((uint64_t)random());
     return rand64;
   }
 
@@ -70,6 +70,16 @@ public:
   GenInfo* gi_;
 
 };
+
+
+
+class TraceRandom: public Trace {
+public:
+  explicit TraceRandom(uint64_t minimum = 0, uint64_t maximum = kRANDOM_RANGE);
+  ~TraceRandom() {}
+  uint64_t Next() override;
+};
+
 
 class TraceUniform: public Trace {
 public:

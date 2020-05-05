@@ -67,7 +67,7 @@ struct ThreadPoolImpl::Impl {
   void StartBGThreads();
 
   void Submit(std::function<void()>&& schedule,
-    std::function<void()>&& unschedule, void* tag, int id, bool first);
+    std::function<void()>&& unschedule, void* tag, int id, int score);
 
   int UnSchedule(void* tag); // 根据 schedule 里的 tag ，相等则删除
   int UnSchedule(void* tag, int id); // 根据 schedule 里的 tag 和 id，同时相等则删除
@@ -121,8 +121,9 @@ private:
   };
 
   using BGQueue = std::deque<BGItem>;
+  using BGMap   = std::multimap<int, BGItem>;
   BGQueue       queue_;
-
+  BGMap         priority_queue_;
   std::mutex               mu_;
   std::condition_variable  bgsignal_;
   std::vector<port::Thread> bgthreads_;
@@ -195,7 +196,7 @@ void ThreadPoolImpl::Impl::BGThread(size_t thread_id) {
     std::unique_lock<std::mutex> lock(mu_);
     // Stop waiting if the thread needs to do work or needs to terminate.
     while (!exit_all_threads_ && !IsLastExcessiveThread(thread_id) &&
-           (queue_.empty() || IsExcessiveThread(thread_id))) {
+           (queue_.empty() && priority_queue_.empty() || IsExcessiveThread(thread_id))) {
       bgsignal_.wait(lock);
     }
 
@@ -222,12 +223,18 @@ void ThreadPoolImpl::Impl::BGThread(size_t thread_id) {
       break;
     }
 
-    auto func = std::move(queue_.front().function);
-    queue_.pop_front();
-
-    queue_len_.store(static_cast<unsigned int>(queue_.size()),
-                     std::memory_order_relaxed);
-
+    std::function<void()> func;
+    if (priority_queue_.size() != 0) {
+      func = std::move(priority_queue_.begin()->second.function);
+      priority_queue_.erase(priority_queue_.begin());
+    }
+    else {
+      func = std::move(queue_.front().function);
+      queue_.pop_front();
+      queue_len_.store(static_cast<unsigned int>(queue_.size()),
+                      std::memory_order_relaxed);
+    }
+    
     bool decrease_io_priority = (low_io_priority != low_io_priority_);
     bool decrease_cpu_priority = (low_cpu_priority != low_cpu_priority_);
     lock.unlock();
@@ -371,7 +378,7 @@ void ThreadPoolImpl::Impl::StartBGThreads() {
 }
 
 void ThreadPoolImpl::Impl::Submit(std::function<void()>&& schedule,
-  std::function<void()>&& unschedule, void* tag, int id, bool first) {
+  std::function<void()>&& unschedule, void* tag, int id, int score) {
 
   std::lock_guard<std::mutex> lock(mu_);
 
@@ -383,11 +390,12 @@ void ThreadPoolImpl::Impl::Submit(std::function<void()>&& schedule,
 
   // Add to  deque
   BGItem* item = nullptr;
-  if(!first) {
+  if(score == 0) {
     queue_.push_back(BGItem());
     item = &queue_.back();
   }
   else {
+    // auto iter = priority_queue_.insert({score, BGItem()});
     queue_.push_front(BGItem());
     item = &queue_.front();
   }
@@ -531,12 +539,12 @@ void ThreadPoolImpl::SubmitJob(std::function<void()>&& job) {
 }
 
 void ThreadPoolImpl::Schedule(void(*function)(void* arg1), void* arg,
-  void* tag, void(*unschedFunction)(void* arg), int id, bool first) {
+  void* tag, void(*unschedFunction)(void* arg), int id, int score) {
   if (unschedFunction == nullptr) {
-    impl_->Submit(std::bind(function, arg), std::function<void()>(), tag, id, first);
+    impl_->Submit(std::bind(function, arg), std::function<void()>(), tag, id, score);
   } else {
     impl_->Submit(std::bind(function, arg), std::bind(unschedFunction, arg),
-                  tag, id, first);
+                  tag, id, score);
   }
 }
 

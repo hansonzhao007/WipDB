@@ -29,9 +29,9 @@ DEFINE_int64(num, 100, "Number of key. Million");
 DEFINE_int64(interval, 1, "interval in million");
 DEFINE_string(patterns, "uniform", "");
 DEFINE_string(path, "data/", "");
+DEFINE_int64(range, 8000000000, "");
 
-struct GenInfo* FLAGS_GI = generator_new_uniform(0, kRANDOM_RANGE);
-vector<GenInfo*> gi_array;
+vector<Trace*> gi_array;
 
 
 void SaveListPivit(std::multiset<uint64_t>& list, std::string filename, int numM) {
@@ -54,21 +54,21 @@ void SaveListPivit(std::multiset<uint64_t>& list, std::string filename, int numM
     fclose(fp);
 }
 
-struct GenInfo* &PickGi() {
+Trace* &PickGi() {
     return gi_array[random() % gi_array.size()];
 }
 
 std::string WorkLoadName() {
     std::string workload_name;
-    for(auto& gi: gi_array)
-        workload_name += gi->get_type() + "_";
+    for(auto& trace: gi_array)
+        workload_name += trace->gi_->get_type() + "_";
     return workload_name;
 }
 
 void PivitDraw(uint64_t num) {
     std::cout << gi_array.size() << " wordloads" << std::endl;
-    for(auto& g: gi_array) {
-        fprintf(stdout, "-- %s \n", g->get_type().c_str());
+    for(auto& trace: gi_array) {
+        fprintf(stdout, "-- %s \n", trace->gi_->get_type().c_str());
     }
 
     std::multiset<uint64_t> list;
@@ -76,8 +76,8 @@ void PivitDraw(uint64_t num) {
     ::mkdir(FLAGS_path.c_str(), 0755);
     
     for (uint64_t i = 1; i <= num; i++) {
-        struct GenInfo* &gi = PickGi();
-        list.insert(gi->next(gi));
+        Trace* gi = PickGi();
+        list.insert(gi->Next());
         if (i >= next_report_) {
             if      (next_report_ < 1000)   next_report_ += 100;
             else if (next_report_ < 5000)   next_report_ += 500;
@@ -97,15 +97,13 @@ void PivitDraw(uint64_t num) {
     }
 }
 
-struct GenInfo* GenerateGi(Slice p) {
-    if(p == Slice("uniform")) return generator_new_uniform(0, kRANDOM_RANGE);
-    else if(p == Slice("zipf")) return generator_new_zipfian(0, kRANDOM_RANGE);
-    else if(p == Slice("xzipf")) return generator_new_xzipfian(0, kRANDOM_RANGE);
-    else if(p == Slice("exp")) return generator_new_exponential(90, kRANDOM_RANGE);
-    else if(p == Slice("normal")) return generator_new_normal(0, kRANDOM_RANGE);
-    else return generator_new_uniform(0, kRANDOM_RANGE);
+Trace* GenerateGi(Slice p) {
+    if(p == Slice("uniform")) return new TraceUniform(123, 0, FLAGS_range);
+    else if(p == Slice("exp")) return new TraceExponential(123, 50, FLAGS_range);
+    else if (p == Slice("expreverse")) return new TraceExponentialReverse(123, 50, FLAGS_range);
+    else if(p == Slice("normal")) return new TraceNormal(123, 0, FLAGS_range);
+    else return new TraceUniform(123, 0, FLAGS_range);
 }
-
 
 int main(int argc, char** argv) {
     ParseCommandLineFlags(&argc, &argv, true);
@@ -131,4 +129,4 @@ int main(int argc, char** argv) {
     return 0;
 }
 
-// ./tests/util/skiplist_pivot --num=150 --interval=1 --patterns=uniform,exp --path=data
+// ./tests/other/skiplist_pivot --num=50 --interval=50 --patterns=uniform,exp --path=data

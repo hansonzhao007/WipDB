@@ -591,7 +591,7 @@ void DBImpl::MaybeScheduleCompaction() {
                   this,                // tag: used to identify this function is called from which bucket
                   nullptr, 
                   kBGWorkFlushTag,     // identify this compaction is minor compaction
-                  false);              // put at the end of the queue
+                  0);              // put at the end of the queue
     Log(options_.info_log, "Schedule FLush in High Pool(Level0 has table %d): High Queue: %d. Low Queue: %d", (int)versions_->NumLevelFiles(0), env_->GetThreadPoolQueueLen(Env::Priority::HIGH), env_->GetThreadPoolQueueLen(Env::Priority::LOW));
   }
 
@@ -618,7 +618,7 @@ void DBImpl::MaybeScheduleCompaction() {
                        this,    // tag: used to identify this function is called from which bucket
                        nullptr, 
                        level,
-                       false);  // put at end of the queue
+                       0);    // put in fifo queue
         Log(options_.info_log, "Schedule Compaction in Low Pool Level-%d: High Queue: %d. Low Queue: %d", level, env_->GetThreadPoolQueueLen(Env::Priority::HIGH),env_->GetThreadPoolQueueLen(Env::Priority::LOW));
       } else if (versions_->ReadTriggerCompaction(level) && !versions_->NeedsSplit()) {
         // if bucket needs split, then we don't trigger read compaction
@@ -632,7 +632,7 @@ void DBImpl::MaybeScheduleCompaction() {
                         this,   // tag: used to identify this function is called from which bucket
                         nullptr, 
                         level,  // identify which level's compaction is scheduled
-                        true);  // put at front of the queue
+                        1);  // put in priority queue
         Log(options_.info_log, "Read Triggered Compaction in Low Pool Level-%d: High Queue: %d. Low Queue: %d", level, env_->GetThreadPoolQueueLen(Env::Priority::HIGH),env_->GetThreadPoolQueueLen(Env::Priority::LOW));
       }
     }
@@ -704,7 +704,7 @@ void DBImpl::MaybeScheduleCompaction() {
     MergeArgs* arg = new MergeArgs();
     arg->bucket = bucket_;
     arg->kv = kv_;
-    env_->Schedule(&KV::BGWorkMerge, arg, Env::Priority::LOW, this, nullptr, kBGWorkMergeAfterSplit, false);
+    env_->Schedule(&KV::BGWorkMerge, arg, Env::Priority::LOW, this, nullptr, kBGWorkMergeAfterSplit);
   }
 }
 
@@ -1195,8 +1195,8 @@ Status DBImpl::DoSplitWork(CompactionState* compact) {
   std::string current_user_key;
   bool has_current_user_key = false;
   SequenceNumber last_sequence_for_key = kMaxSequenceNumber;
-  int count = 0;
-  
+  int64_t count = 0;
+  int64_t drop_count = 0;
   // iterate second time
   for (input->SeekToFirst(); input->Valid(); ) {
     Slice key = input->key();
@@ -1219,6 +1219,7 @@ Status DBImpl::DoSplitWork(CompactionState* compact) {
       if (last_sequence_for_key <= compact->smallest_snapshot) {
         // Hidden by an newer entry for same user key
         drop = true;    // (A)
+        drop_count++;
       } 
 
       last_sequence_for_key = ikey.sequence;
@@ -1348,7 +1349,12 @@ Status DBImpl::DoSplitWork(CompactionState* compact) {
   
 
   Log(options_.info_log,
-      "Level-%d Split Version install: %llu us. %s %s",compact->compaction->level(), (unsigned long long) env_->NowMicros() - install_time, versions_->LevelSummary(&tmp), dbname_.c_str());
+      "Level-%d Split Version install: %llu us. Drop: %lld, %s %s",
+      compact->compaction->level(), 
+      (unsigned long long) env_->NowMicros() - install_time, 
+      (long long) drop_count,
+      versions_->LevelSummary(&tmp), 
+      dbname_.c_str());
   
   versions_->ClearSplit();
   return status;
@@ -1398,7 +1404,8 @@ Status DBImpl::DoCompactionWorkKV(CompactionState* compact) {
   SequenceNumber last_sequence_for_key = kMaxSequenceNumber;
 
   // iterator order: increasing key, decreasing sequence_number 
-  int count = 0;
+  int64_t count = 0;
+  int64_t drop_count = 0;
   for (; input->Valid() && !shutting_down_.Acquire_Load(); ) {
     // Prioritize immutable compaction work
     if (imm_ != nullptr) {
@@ -1438,6 +1445,7 @@ Status DBImpl::DoCompactionWorkKV(CompactionState* compact) {
       if (last_sequence_for_key <= compact->smallest_snapshot) {
         // Hidden by an newer entry for same user key
         drop = true;    // (A)
+        drop_count++;
       } 
       last_sequence_for_key = ikey.sequence;
     }
@@ -1507,7 +1515,13 @@ Status DBImpl::DoCompactionWorkKV(CompactionState* compact) {
   }
 
   Log(options_.info_log,
-      "Level-%d Major compaction end (Imm: %llu us, Merge: %llu us. %.2f MB/s) %s", compact->compaction->level(), (unsigned long long)imm_micros, (unsigned long long)stats.micros, (double)stats.bytes_written/stats.micros, dbname_.c_str() );
+      "Level-%d Major compaction end (Imm: %llu us, Merge: %llu us. %.2f MB/s). Drop: %lld %s", 
+      compact->compaction->level(), 
+      (unsigned long long)imm_micros, 
+      (unsigned long long)stats.micros, 
+      (double)stats.bytes_written/stats.micros, 
+      (long long)drop_count,
+      dbname_.c_str() );
 
   mutex_.Lock();
   stats_[compact->compaction->level() + 1].Add(stats);
@@ -1566,7 +1580,8 @@ Iterator* DBImpl::NewInternalIterator(const ReadOptions& options,
     imm_->Ref();
   }
   versions_->current()->AddIteratorsKV(options, &list);
-  if (list.size() - versions_->current()->NumFiles(kSplitLevel) >= 6) {
+  // if more than 6 sstables, the we compact all the sstables to the last level
+  if (list.size() - versions_->current()->NumFilesAll() >= 6) {
     query_compaction_ = true;
     MaybeScheduleCompaction();
   }
@@ -1834,7 +1849,7 @@ Status DBImpl::MakeRoomForWriteKV(bool force) {
       if (!mem_->double_flush_size_once_) {
         mem_->double_flush_size_once_ = true;
         mem_->flush_size_ = 2 * mem_->flush_size_;
-        Log(options_.info_log, "Mem Table Flush Double Once. to %d kB. %s 's mem: %d", mem_->flush_size_ / 1024, dbname_.c_str(), mem_);
+        // Log(options_.info_log, "Mem Table Flush Double Once. to %d kB. %s 's mem: %d", mem_->flush_size_ / 1024, dbname_.c_str(), mem_);
       }
       else 
       {
@@ -1849,12 +1864,12 @@ Status DBImpl::MakeRoomForWriteKV(bool force) {
             Log(options_.info_log, "******** Warning: Flush job is already working. (%d) ********* ", rescheduleflush);
           }
           else { // flush not work yet, reschedule to top
-            env_->Schedule(&DBImpl::BGWorkFlush, this, Env::Priority::HIGH, this, nullptr, kBGWorkFlushTag, true); // 将 flush 安排到队列首
+            env_->Schedule(&DBImpl::BGWorkFlush, this, Env::Priority::HIGH, this, nullptr, kBGWorkFlushTag, 1); // move the job to priority queue
             Log(options_.info_log, "=== Priority Flush compaction. High Queue: %d", env_->GetThreadPoolQueueLen(Env::Priority::HIGH));
           }
         }
         env_->FlushWaitAdd();
-        background_work_finished_signal_.Wait(); // 等待 background 的 thread 完成 flush，并 notify
+        background_work_finished_signal_.Wait(); // wait background thread to flush，and notify
         env_->FlushWaitDec();
         Log(options_.info_log, "Imm Table full; waiting released(%llu us). ... %s\n", (unsigned long long) env_->NowMicros() - start, versions_->LevelSummary(&tmp));
         has_flush_wait_ = false;
@@ -1868,7 +1883,7 @@ Status DBImpl::MakeRoomForWriteKV(bool force) {
       uint64_t start = env_->NowMicros();
       has_too_many_level0_files_ = true;
       if (background_compaction_scheduled_level_[0]) {
-        int reschedule = env_->UnSchedule(this, Env::Priority::LOW, 0); // 移除在队列中的 level 0 compaction. 
+        int reschedule = env_->UnSchedule(this, Env::Priority::LOW, 0); // remove level 0 compaction in the queue
         // assert(reschedule == 1);
         if (reschedule != 1) {
           Log(options_.info_log, "******** Warning: Level-0 compaction job is already working. (%d) ********* ", reschedule);

@@ -35,7 +35,7 @@ DEFINE_int64(interval, 1, "interval in million");
 DEFINE_string(patterns, "uniform", "");
 DEFINE_string(pivot_path, "data/", "");
 
-const uint64_t kKeyRange = kRANDOM_RANGE;
+const uint64_t kKeyRange = 8000000000;
 
 
 struct GenInfo* FLAGS_GI = generator_new_uniform(0, kKeyRange);
@@ -104,7 +104,7 @@ struct GenInfo* GenerateGi(Slice p) {
     if(p == Slice("uniform")) return generator_new_uniform(0, kKeyRange);
     else if(p == Slice("zipf")) return generator_new_zipfian(0, kKeyRange);
     else if(p == Slice("xzipf")) return generator_new_xzipfian(0, kKeyRange);
-    else if(p == Slice("exp")) return generator_new_exponential(90, kKeyRange);
+    else if(p == Slice("exp")) return generator_new_exponential(50, kKeyRange);
     else if(p == Slice("normal")) return generator_new_normal(0, kKeyRange);
     else return generator_new_uniform(0, kKeyRange);
 }

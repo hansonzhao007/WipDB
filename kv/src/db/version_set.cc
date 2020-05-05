@@ -788,7 +788,7 @@ VersionSet::VersionSet(const std::string& dbname,
       dummy_versions_(this),
       current_(nullptr) {
   AppendVersion(new Version(this));
-  split_delay_ = 8 * random_double();
+  split_delay_ = 4 * random_double();
 }
 
 VersionSet::~VersionSet() {
@@ -1106,7 +1106,7 @@ void VersionSet::FinalizeKV(Version* v) {
   }
 
   // if file number is more than 8 + a random number
-  if (v->files_[kSplitLevel].size() >= 8 /* + split_delay_*/ ) {
+  if (v->files_[kSplitLevel].size() >= 8  + split_delay_ ) {
     v->should_split_ = true;
   }
   
@@ -1397,19 +1397,20 @@ Compaction* VersionSet::PickCompactionKVAtLevel(int level) {
 Compaction* VersionSet::PickCompactionKVForQuery() {
   Compaction* c;
 
-  // pick all the table at 0 to kNumLevels - 1 Level
-  int level = config::kSplitLevel - 1;
-  for(int i = config::kSplitLevel - 1; i >= 0; --i) {
+  // pick all the table at 0 to kSplitLevel Level
+  int level = config::kSplitLevel;
+  for(int i = config::kSplitLevel; i >= 0; --i) {
     if (current_->files_[i].size() != 0) {
         level = i;
         break;
     }
   }
-  level = std::min(level, kSplitLevel - 1); 
+  level = std::min(level, kSplitLevel); 
   if(level < 0) return nullptr;
   assert(level >= 0);
   assert(level+1 < config::kNumLevels);
 
+  // Major compaction all the sstable to the last level
   c = new Compaction(options_, level);
   for (int l = 0; l <= level; ++l) {
     for (size_t i = 0; i < current_->files_[l].size(); i++) {
@@ -1418,6 +1419,8 @@ Compaction* VersionSet::PickCompactionKVForQuery() {
     }
   }
   
+  // if the number of all sstable is smaller than 4,
+  // we do not do compaction.
   if (c->inputs_[0].size() < 4) {
     delete c;
     return nullptr;

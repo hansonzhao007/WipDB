@@ -1260,6 +1260,8 @@ random_double(void)
         method = &Benchmark::R75W25;
       } else if (name == Slice("r100")) {
         method = &Benchmark::R100;
+      } else if (name == Slice("r0")) {
+        method = &Benchmark::WriteRandom;
       } else {
         if (name != Slice()) {  // No error message for empty name
           fprintf(stderr, "unknown benchmark '%s'\n", name.ToString().c_str());
@@ -1691,8 +1693,8 @@ random_double(void)
     WriteOptions woption;
     uint64_t i = 0;
     while (!duration.Done(1)) {
-      // 75% write
-      if (i % 4 != 0) {
+      // 80% write
+      if (i % 5 != 0) {
         const uint64_t k = thread->trace->Next() % FLAGS_range;
         char key[100];
         snprintf(key, sizeof(key), "%016" PRIu64 "", k);

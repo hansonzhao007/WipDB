@@ -397,7 +397,7 @@ void MemTable::SortTable() {
 
     auto duration = Env::Default()->NowMicros() - start;
 
-    // Log(info_log_, "Sort Table end. %llu us", (unsigned long long) duration);
+    Log(info_log_, "Sort Table end. %llu us", (unsigned long long) duration);
 
     hash_table_->Reset();
     pool_.clear();

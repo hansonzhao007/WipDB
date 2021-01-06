@@ -7,7 +7,7 @@ BLOOM_BITS=16
 CACHE=8388608
 VALUE=100
 
-rm -rf /mnt/nvm/*
+rm -rf /mnt/nvm/kv_ycsb
 
 rm -rf /mnt/ssd/*.log
 echo fb0-=0-= | sudo -S fstrim /mnt/ssd

@@ -12,6 +12,7 @@
 #include <cstdlib>
 #include <unistd.h>
 #include <stdint.h>
+#include <deque>
 
 #include "kv/kv.h"
 #include "kv/cache.h"
@@ -129,6 +130,7 @@ DEFINE_int32(rwdelay,         10,       "delay between each write in us");
 DEFINE_int32(sleep,           100,      "sleep for write in readwhilewriting2");
 DEFINE_int64(report_interval, 20,       "report speed time interval in second");
 DEFINE_bool(filllarge,        false,    "if we want to test 30 billion insertion");
+DEFINE_bool(printBucket,      false,    "print bucket info every 1B insertion");
 
 static kv::YCSBLoadType FLAGS_ycsb_type = kv::kYCSB_A; // YCSB workload type
 static kv::Env* FLAGS_env = kv::Env::Default();
@@ -681,10 +683,9 @@ class Benchmark {
       } else if (name == Slice("fillexp")) {
         fresh_db = true;
         method = &Benchmark::WriteExp;
-      } 
-      else if (name == Slice("fillexp")) {
+      } else if (name == Slice("fillnormal")) {
         fresh_db = true;
-        method = &Benchmark::WriteZipfian;
+        method = &Benchmark::WriteNormal;
       } else if (name == Slice("fillrandom2")) {
         fresh_db = true;
         method = &Benchmark::WriteWithDistributionChange;
@@ -693,7 +694,7 @@ class Benchmark {
         method = &Benchmark::WriteWithDistributionChange3;
       }  else if (name == Slice("fillrandom4")) {
         fresh_db = true;
-        method = &Benchmark::WriteStress;
+        method = &Benchmark::Write4Distribution;
       } else if (name == Slice("fillVarySize")) {
         fresh_db = true;
         method = &Benchmark::FillWithVariableSize;
@@ -777,6 +778,8 @@ class Benchmark {
         method = &Benchmark::R75W25;
       } else if (name == Slice("r100")) {
         method = &Benchmark::R100;
+      } else if (name == Slice("r0")) {
+        method = &Benchmark::WriteRandom;
       } else if (name == Slice("ycsbf")) {
         FLAGS_ycsb_type = kYCSB_F;
         method = &Benchmark::YCSB;
@@ -1069,6 +1072,67 @@ class Benchmark {
     thread->stats.AddBytes(bytes);
   }
 
+  void Write4Distribution(ThreadState* thread) {
+    if (num_ != FLAGS_num) {
+      char msg[100];
+      snprintf(msg, sizeof(msg), "(%" PRIu64 " ops)", num_);
+      thread->stats.AddMessage(msg);
+    }
+
+    RandomGenerator gen;
+    WriteBatch batch;
+    Status s;
+    Duration duration(0, num_);
+
+    int64_t bytes = 0;
+    uint64_t i = 0;
+    bool pBucket = false;
+    uint64_t printBucketInterval = 500000000;
+    uint64_t changeTraceInterval = 1000000000;
+    std::deque<Trace*> traces;
+    traces.push_back(new TraceNormal(12312321, 1, changeTraceInterval));
+    traces.push_back(new TraceUniform(1234513451, 1, changeTraceInterval));
+    traces.push_back(new TraceExponentialReverse(334421535, 50, 1, changeTraceInterval));
+
+    uint64_t nextPrintTime = printBucketInterval;
+    uint64_t nextChangeTrace = changeTraceInterval;
+    thread->trace = new TraceExponential(123456, 50, changeTraceInterval);
+    uint64_t offset = 0;
+    while (!duration.Done(entries_per_batch_)) {
+      batch.Clear();
+      for (uint64_t j = 0; j < entries_per_batch_; j++) {
+        uint64_t k = 0;
+        if (duration.Ops() >= nextPrintTime) {
+          db_->PrintBuckets();
+          nextPrintTime += printBucketInterval;
+        }
+
+        if (duration.Ops() >= nextChangeTrace) {
+          printf("change workload distribution\n");
+          thread->trace = traces.front();
+          traces.pop_front();
+          nextChangeTrace += changeTraceInterval;
+          offset += changeTraceInterval;
+        }
+
+        k = (thread->trace->Next() % changeTraceInterval)  + offset;
+        
+        char key[100];
+        snprintf(key, sizeof(key), "%016" PRIu64 "", k);
+        batch.Put(key, gen.Generate(value_size_));
+        bytes += value_size_ + strlen(key);
+        thread->stats.FinishedSingleOp(db_);
+      }
+      s = db_->Write(write_options_, &batch);
+      if (!s.ok()) {
+        fprintf(stderr, "put error: %s\n", s.ToString().c_str());
+        exit(1);
+      }
+      i+=entries_per_batch_;
+    }
+    db_->PrintBuckets();
+    thread->stats.AddBytes(bytes);
+  }
 
   void WriteWithDistributionChange3(ThreadState* thread) {
     if (num_ != FLAGS_num) {
@@ -1208,10 +1272,18 @@ class Benchmark {
     DoWriteLarge(thread, false);
   }
 
-  void WriteExp(ThreadState* thread) {
-    thread->trace = new TraceExponential(random(), 50);
+  void WriteNormal(ThreadState* thread) {
+    printf("fillnormal\n");
+    thread->trace = new TraceNormal(123, 1, FLAGS_range);
     DoWrite(thread, false);
   }
+
+  void WriteExp(ThreadState* thread) {
+    printf("fillexp\n");
+    thread->trace = thread->trace_exp;
+    DoWrite(thread, false);
+  }
+
   void WriteZipfian(ThreadState* thread) {
     thread->trace = new TraceZipfian(random());
     DoWrite(thread, false);
@@ -1454,8 +1526,8 @@ class Benchmark {
     WriteOptions woption;
     uint64_t i = 0;
     while (!duration.Done(1)) {
-      // 75% write
-      if (i % 4 != 0) {
+      // 80% write
+      if (i % 5 != 0) {
         const uint64_t k = thread->trace->Next() % FLAGS_range;
         char key[100];
         snprintf(key, sizeof(key), "%016" PRIu64 "", k);
@@ -1532,8 +1604,16 @@ class Benchmark {
 
     int64_t bytes = 0;
     uint64_t i = 0;
+    uint64_t printBucketInterval = 1000000000;
+    uint64_t nextPrintTime = printBucketInterval;
     while (!duration.Done(entries_per_batch_)) {
       batch.Clear();
+      if (FLAGS_printBucket && duration.Ops() >= nextPrintTime) {
+        // printBuckets every 1 Billion records
+        db_->PrintBuckets();
+        nextPrintTime += printBucketInterval;
+      }
+
       for (uint64_t j = 0; j < entries_per_batch_; j++) {
         const uint64_t k = seq ? (i+j): thread->trace->Next() % FLAGS_range;
         char key[100];

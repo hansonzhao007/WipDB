@@ -2754,6 +2754,8 @@ void VerifyDBFromDB(std::string& truth_db_name) {
         method = &Benchmark::R75W25;
       } else if (name == Slice("r100")) {
         method = &Benchmark::R100;
+      } else if (name == Slice("r0")) {
+        method = &Benchmark::WriteRandom;
       } else if (name == Slice("ycsba")) {
         FLAGS_ycsb_type = kYCSB_A;
         method = &Benchmark::YCSB;
@@ -4107,12 +4109,12 @@ void VerifyDBFromDB(std::string& truth_db_name) {
     DBWithColumnFamilies* db_with_cfh = SelectDBWithCfh(thread);
     uint64_t i = 0;
     while (!duration.Done(1)) {
-      // 25% read
+      // 20% read
       std::unique_ptr<const char[]> key_guard;
       Slice key = AllocateKey(&key_guard);
       int64_t key_rand = GetRandomKey(&thread->rand);
       
-      if (i % 4 != 0) {
+      if (i % 5 != 0) {
         // printf("W key: %llu\n", key_rand);
         GenerateKeyFromInt(key_rand, FLAGS_num, &key);
         db_with_cfh->db->Put(woption, key, gen.Generate(value_size_));

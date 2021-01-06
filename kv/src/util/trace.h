@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 #include <vector>
+#include <algorithm>
+#include <cmath>
 #include "util/geninfo.h"
 
 namespace kv {
@@ -124,11 +126,12 @@ class TraceExponentialReverse: public Trace {
 public:
   #define FNV_OFFSET_BASIS_64 ((UINT64_C(0xCBF29CE484222325)))
   #define FNV_PRIME_64 ((UINT64_C(1099511628211)))
-  explicit TraceExponentialReverse(int seed, const double percentile = 50, double range = kRANDOM_RANGE);
+  explicit TraceExponentialReverse(int seed, const double percentile = 50, double offset = 0, double range = kRANDOM_RANGE);
   ~TraceExponentialReverse()  {}
   uint64_t Next() override;
 private:
   uint64_t range_;
+  uint64_t offset_;
 };
 
 

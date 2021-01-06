@@ -2,7 +2,7 @@ echo fb0-=0-= | sudo -S bash -c 'echo 800000 > /proc/sys/fs/file-max'
 ulimit -n 800000
 
 OPS=8000000
-NUM=1200000000
+NUM=1000000000
 BLOOM_BITS=16
 CACHE=8388608
 VALUE=100
@@ -17,13 +17,13 @@ echo fb0-=0-= | sudo -S bash -c 'echo 1 > /proc/sys/vm/drop_caches'
 cgexec -g memory:kv64 ./kv/release/tests/db/kv_bench --cache_size=$CACHE --logpath=/mnt/ssd --db=/mnt/nvm/kv_ycsb   --threads=$THREAD --open_files=40000  --num=$NUM --range=$NUM  --reads=2000000 --partition=100 --write_buffer_size=2097152  --batch_size=1000  --stats_interval=1000000  --bloom_bits=$BLOOM_BITS --low_pool=3 --high_pool=3 --value_size=$VALUE  --direct_io=false --histogram=true    --log=true --skiplistrep=true   --benchmarks=loadreverse,ycsba,ycsbb,ycsbc,ycsbf,ycsbd,ycsbe,stats         --ycsb_ops_num=$OPS --seek_nexts=100  --use_existing_db=true  --print_wa=true  --log_dio=true --hugepage=true | tee kv_ycsb.log
 
 
-# rm -rf /mnt/nvm/*
-# rm /mnt/ssd/*.log
-# cp -R /mnt/ssd/kv_ycsb /mnt/nvm/
-# echo fb0-=0-= | sudo -S fstrim /mnt/ssd
-# echo fb0-=0-= | sudo -S fstrim /mnt/nvm
-# echo fb0-=0-= | sudo -S bash -c 'echo 1 > /proc/sys/vm/drop_caches'
-# cgexec -g memory:kv64 ./kv/release/tests/db/kv_bench --cache_size=$CACHE --logpath=/mnt/ssd --db=/mnt/nvm/kv_ycsb   --threads=$THREAD --open_files=40000  --num=$NUM --range=$NUM  --reads=2000000 --partition=100 --write_buffer_size=2097152  --batch_size=1000  --stats_interval=1000000  --bloom_bits=$BLOOM_BITS --low_pool=3 --high_pool=3 --value_size=$VALUE  --direct_io=false --histogram=true    --log=true --skiplistrep=false   --benchmarks=loadreverse,ycsba,ycsbb,ycsbc,ycsbf,ycsbd,ycsbe,stats         --ycsb_ops_num=$OPS --seek_nexts=100  --use_existing_db=true  --print_wa=true  --log_dio=true --hugepage=true | tee kv_ycsb_hash.log
+rm -rf /mnt/nvm/*
+rm /mnt/ssd/*.log
+cp -R /mnt/ssd/kv_ycsb /mnt/nvm/
+echo fb0-=0-= | sudo -S fstrim /mnt/ssd
+echo fb0-=0-= | sudo -S fstrim /mnt/nvm
+echo fb0-=0-= | sudo -S bash -c 'echo 1 > /proc/sys/vm/drop_caches'
+cgexec -g memory:kv64 ./kv/release/tests/db/kv_bench --cache_size=$CACHE --logpath=/mnt/ssd --db=/mnt/nvm/kv_ycsb   --threads=$THREAD --open_files=40000  --num=$NUM --range=$NUM  --reads=2000000 --partition=100 --write_buffer_size=2097152  --batch_size=1000  --stats_interval=1000000  --bloom_bits=$BLOOM_BITS --low_pool=3 --high_pool=3 --value_size=$VALUE  --direct_io=false --histogram=true    --log=true --skiplistrep=false   --benchmarks=loadreverse,ycsba,ycsbb,ycsbc,ycsbf,ycsbd,ycsbe,stats         --ycsb_ops_num=$OPS --seek_nexts=100  --use_existing_db=true  --print_wa=true  --log_dio=true --hugepage=true | tee kv_ycsb_hash.log
 
 
 rm -rf /mnt/nvm/*

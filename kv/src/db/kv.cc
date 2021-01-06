@@ -365,6 +365,7 @@ void KV::PrintBuckets() {
     std::string value;
     GetBuckets(&value);
     fprintf(stdout, "\n%s\n", value.c_str());
+    fflush(stdout);
 }
 bool KV::GetProperty(const Slice& property, std::string* value) {
     value->clear();

@@ -162,18 +162,19 @@ uint64_t TraceExponential::Next() {
 
 
 // exponential reverse
-TraceExponentialReverse::TraceExponentialReverse(int seed, const double percentile, double range):
+TraceExponentialReverse::TraceExponentialReverse(int seed, const double percentile, double offset, double range):
     Trace(seed), range_(range) {
     range = range * 0.15;
     gi_ = new GenInfo();
     gi_->gen.exponential.gamma = - log(1.0 - (percentile/100.0)) / range;
 
     gi_->type = GEN_EXPONENTIAL;
+    offset_ = offset;
 }
 
 uint64_t TraceExponentialReverse::Next() {
-    uint64_t d = range_ - ((uint64_t)(- log(RandomDouble()) / gi_->gen.exponential.gamma) % range_);
-    return d;
+    uint64_t d = (uint64_t)(- log(RandomDouble()) / gi_->gen.exponential.gamma) % range_;
+    return range_ - d + offset_;
 }
 
 // ===================================================
